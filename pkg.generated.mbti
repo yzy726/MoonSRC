@@ -6,6 +6,7 @@ import {
 }
 
 // Values
+pub fn resample(Config, ArrayView[Double]) -> Result[Array[Double], ResampleError]
 
 // Errors
 
