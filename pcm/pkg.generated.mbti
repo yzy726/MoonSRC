@@ -1,0 +1,32 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Ag108/MoonSRC/pcm"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn decode(Bytes) -> Result[Array[Double], PcmError]
+
+pub fn encode(ArrayView[Double]) -> Result[Encoded, PcmError]
+
+// Errors
+
+// Types and methods
+pub(all) struct Encoded {
+  bytes : Bytes
+  clipped_samples : Int
+}
+
+pub(all) enum PcmError {
+  OddByteLength
+  NonFinite(Int)
+  ResourceLimit
+} derive(Eq, @debug.Debug)
+pub fn PcmError::equal(Self, Self) -> Bool
+pub fn PcmError::not_equal(Self, Self) -> Bool
+pub fn PcmError::to_repr(Self) -> @debug.Repr
+
+// Type aliases
+
+// Traits
