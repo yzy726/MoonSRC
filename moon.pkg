@@ -2,3 +2,8 @@ import {
   "moonbitlang/core/debug",
   "Ag108/MoonSRC/internal/filter",
 }
+
+import {
+  "Ag108/MoonSRC/internal/signals",
+  "moonbitlang/core/math",
+} for "test"

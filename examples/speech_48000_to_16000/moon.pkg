@@ -1,0 +1,7 @@
+import {
+  "Ag108/MoonSRC" @src,
+  "Ag108/MoonSRC/internal/signals",
+  "moonbitlang/core/math",
+}
+
+pkgtype(kind: "executable")

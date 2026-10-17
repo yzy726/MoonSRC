@@ -1,0 +1,6 @@
+import {
+  "Ag108/MoonSRC" @src,
+  "Ag108/MoonSRC/internal/signals",
+}
+
+pkgtype(kind: "executable")
