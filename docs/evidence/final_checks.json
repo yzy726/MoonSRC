@@ -1,0 +1,250 @@
+{
+  "status": "pass",
+  "date": "2026-10-17",
+  "scope": "local acceptance only; no push or Mooncakes publication",
+  "checks": [
+    {
+      "check": "format",
+      "command": [
+        "moon",
+        "fmt",
+        "--check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "check-native",
+      "command": [
+        "moon",
+        "check",
+        "--target",
+        "native",
+        "--deny-warn",
+        "--warn-list",
+        "+73"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "build-native",
+      "command": [
+        "moon",
+        "build",
+        "--target",
+        "native",
+        "--deny-warn"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "test-native",
+      "command": [
+        "moon",
+        "test",
+        "--target",
+        "native",
+        "--deny-warn"
+      ],
+      "exit_code": 0,
+      "tests": {
+        "total": 126,
+        "passed": 126,
+        "failed": 0
+      }
+    },
+    {
+      "check": "check-js",
+      "command": [
+        "moon",
+        "check",
+        "--target",
+        "js",
+        "--deny-warn",
+        "--warn-list",
+        "+73"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "build-js",
+      "command": [
+        "moon",
+        "build",
+        "--target",
+        "js",
+        "--deny-warn"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "test-js",
+      "command": [
+        "moon",
+        "test",
+        "--target",
+        "js",
+        "--deny-warn"
+      ],
+      "exit_code": 0,
+      "tests": {
+        "total": 126,
+        "passed": 126,
+        "failed": 0
+      }
+    },
+    {
+      "check": "check-wasm-gc",
+      "command": [
+        "moon",
+        "check",
+        "--target",
+        "wasm-gc",
+        "--deny-warn",
+        "--warn-list",
+        "+73"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "build-wasm-gc",
+      "command": [
+        "moon",
+        "build",
+        "--target",
+        "wasm-gc",
+        "--deny-warn"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "test-wasm-gc",
+      "command": [
+        "moon",
+        "test",
+        "--target",
+        "wasm-gc",
+        "--deny-warn"
+      ],
+      "exit_code": 0,
+      "tests": {
+        "total": 126,
+        "passed": 126,
+        "failed": 0
+      }
+    },
+    {
+      "check": "e2e",
+      "command": [
+        "python",
+        "scripts/e2e.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "quality",
+      "command": [
+        "python",
+        "scripts/quality.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "examples",
+      "command": [
+        "python",
+        "scripts/run_examples.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "bounded-stream",
+      "command": [
+        "python",
+        "scripts/bounded_stream.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "consumer",
+      "command": [
+        "python",
+        "scripts/consumer.py",
+        "--report",
+        "docs/evidence/consumer.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "api-docs",
+      "command": [
+        "moon",
+        "doc"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "interfaces",
+      "command": [
+        "moon",
+        "info",
+        "--target",
+        "native"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "final-format",
+      "command": [
+        "moon",
+        "fmt"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "final-format-check",
+      "command": [
+        "moon",
+        "fmt",
+        "--check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "interface-diff",
+      "command": [
+        "git",
+        "diff",
+        "--exit-code",
+        "--",
+        "*.mbti"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "environment": {
+    "platform": "Windows-11-10.0.22631-SP0",
+    "python": "3.13.5",
+    "node": "v22.19.0",
+    "toolchain": [
+      "moon 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moon.exe",
+      "moonc v0.10.14+7d59c7ec9 (2026-09-18) ~\\.moon\\bin\\moonc.exe",
+      "moonrun 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moonrun.exe",
+      "",
+      "Feature flags enabled: rr_moon_mod,rr_moon_pkg"
+    ],
+    "cpu": "Intel Core i7-14700HX, 20 cores, 28 logical processors"
+  },
+  "additional_validation": [
+    "Python scripts compiled",
+    "local Markdown links resolved",
+    "README copies identical",
+    "pre-commit and commit-msg hooks smoke tested",
+    "CI YAML parsed",
+    "raw quality output SHA-256 verified",
+    "temporary consumer leaves source workspace unchanged"
+  ],
+  "excluded_by_user": [
+    "Git push",
+    "Mooncakes publication and registry install"
+  ]
+}

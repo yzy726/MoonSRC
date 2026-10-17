@@ -1,0 +1,23 @@
+{
+  "status": "pass",
+  "source": "local moon package ZIP, extracted into a fresh temporary workspace",
+  "registry_install": false,
+  "published": false,
+  "targets": [
+    {
+      "target": "native",
+      "status": "pass",
+      "stdout": "local_consumer frames=480 channels=2 lookahead_in=96"
+    },
+    {
+      "target": "js",
+      "status": "pass",
+      "stdout": "local_consumer frames=480 channels=2 lookahead_in=96"
+    },
+    {
+      "target": "wasm-gc",
+      "status": "pass",
+      "stdout": "local_consumer frames=480 channels=2 lookahead_in=96"
+    }
+  ]
+}

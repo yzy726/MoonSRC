@@ -1,0 +1,4 @@
+* text=auto eol=lf
+*.f64 -text
+*.wav -text
+*.zip -text

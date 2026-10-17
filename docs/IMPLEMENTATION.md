@@ -15,7 +15,7 @@ All commits stay local and use yzy726. Each task is a submission checkpoint.
    RED: moon test --target native -f 'model/*'; then implement and full verify.
 
 ## Phase 2 / Batch 2: bandlimited filter
-3. Create filter.mbt and filter_wbtest.mbt. Private make_filter(Config)
+3. Create internal/filter/filter.mbt and internal/filter/filter_wbtest.mbt. Bounded internal make_filter(phases,cutoff)
    constructs normalized 193-tap exact phase tables. Test DC normalization,
    symmetry, fractional phase and 48->16 rejection before implementation.
    RED: moon test --target native -f 'filter/*'; then full verify.
@@ -69,3 +69,5 @@ moon test --target native --deny-warn
 Review git diff plus generated .mbti files. Cross-backend runs are required at
 filter/stream integration and final acceptance. Every task records test results
 in .agent-workplace/state/checkpoint.json and docs/TESTING.md at delivery.
+
+Delivery status: all eleven local steps completed; registry publication and Git push are explicitly excluded by the user. See LOCAL_ACCEPTANCE.md and evidence/final_checks.json.

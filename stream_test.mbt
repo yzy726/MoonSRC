@@ -122,3 +122,45 @@ test "stream/invalid frames and nonfinite samples do not mutate state" {
   assert_true(stream.finish(FixedArray::make(1, 0.0)) is Err(MisalignedOutput))
   assert_true(stream.process([0.0, 0.0][:], out) is Ok(_))
 }
+
+///|
+test "stream/finite numeric overflow faults until reset" {
+  let config = @MoonSRC.Config::new(48000, 16000, 1).unwrap()
+  let stream = @MoonSRC.Resampler::new(config)
+  let input = Array::makei(193, i => {
+    let x = (i - 96).to_double()
+    let sign = if x == 0.0 {
+      1.0
+    } else {
+      @math.sin(@math.PI * (0.94 / 3.0) * x) / x
+    }
+    if sign < 0.0 {
+      -1.7976931348623157e308
+    } else {
+      1.7976931348623157e308
+    }
+  })
+  let output = FixedArray::make(256, 0.0)
+  assert_true(stream.process(input[:], output) is Err(NumericOverflow))
+  assert_true(stream.process([][:], output) is Err(InvalidState))
+  assert_true(stream.finish(output) is Err(InvalidState))
+  stream.reset()
+  assert_true(stream.process(Array::make(193, 0.0)[:], output) is Ok(_))
+}
+
+///|
+test "stream/nonfinite error preserves earlier valid history" {
+  let config = @MoonSRC.Config::new(48000, 16000, 1).unwrap()
+  let input = Array::make(96, 0.25)
+  let expected = @MoonSRC.resample(config, input[:]).unwrap()
+  let stream = @MoonSRC.Resampler::new(config)
+  let output = FixedArray::make(128, 0.0)
+  assert_eq(stream.process(input[:], output).unwrap().consumed_frames, 96)
+  assert_true(stream.process([0.0, 0.0 / 0.0][:], output) is Err(NonFinite(1)))
+  assert_eq(stream.stats().input_frames, 96L)
+  let end_progress = stream.finish(output).unwrap()
+  assert_eq(end_progress.produced_frames, expected.length())
+  for i in 0..<expected.length() {
+    assert_eq(output[i], expected[i])
+  }
+}
