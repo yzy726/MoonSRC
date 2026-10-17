@@ -16,11 +16,11 @@ pub(all) enum ResampleError {
 ///|
 /// Validated immutable configuration for one interleaved PCM stream.
 pub struct Config {
-  input_rate : Int
-  output_rate : Int
-  channels : Int
-  numerator : Int
-  denominator : Int
+  priv input_rate : Int
+  priv output_rate : Int
+  priv channels : Int
+  priv numerator : Int
+  priv denominator : Int
 } derive(Debug, Eq)
 
 ///|
