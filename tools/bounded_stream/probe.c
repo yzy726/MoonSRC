@@ -1,3 +1,6 @@
+#ifndef _WIN32
+#define _POSIX_C_SOURCE 200809L
+#endif
 /* Monotonic timing and OS process memory only; this file does no audio work. */
 #include "moonbit.h"
 #include <stdint.h>

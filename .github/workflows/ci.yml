@@ -1,0 +1,67 @@
+name: CI
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  MOONBIT_INSTALL_VERSION: 0.10.14+7d59c7ec9
+
+jobs:
+  backends:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [native, js, wasm-gc]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned MoonBit
+        run: |
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash -s "$MOONBIT_INSTALL_VERSION"
+          echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
+      - run: moon version --all
+      - run: moon fmt --check
+      - run: moon check --target ${{ matrix.target }} --deny-warn --warn-list +73
+      - run: moon build --target ${{ matrix.target }} --deny-warn
+      - run: moon test --target ${{ matrix.target }} --deny-warn
+      - name: Public interface baseline
+        run: |
+          moon info --target native
+          git diff --exit-code -- '*.mbti'
+
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install pinned MoonBit
+        run: |
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash -s "$MOONBIT_INSTALL_VERSION"
+          echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
+      - run: python scripts/e2e.py --report _build/ci-evidence/e2e.json
+      - run: python scripts/quality.py --report _build/ci-evidence/quality.json --keep-raw _build/ci-evidence
+      - run: python scripts/run_examples.py --report _build/ci-evidence/examples.json
+      - run: python scripts/bounded_stream.py --report _build/ci-evidence/bounded_stream.json
+      - run: python scripts/consumer.py --report _build/ci-evidence/consumer.json
+      - name: Final interface and formatting check
+        run: |
+          moon info --target native
+          moon fmt --check
+          git diff --exit-code
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: acceptance-evidence
+          path: _build/ci-evidence/

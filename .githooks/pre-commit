@@ -1,3 +1,4 @@
 #!/bin/sh
-
-moon check
+set -eu
+moon fmt --check
+moon check --target native --deny-warn --warn-list +73

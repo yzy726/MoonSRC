@@ -1,21 +1,11 @@
-# Git Hooks
+# Local hooks
 
-## Pre-commit Hook
+Opt in with `git config core.hooksPath .githooks`. This command changes only this
+repository. Hook installation is optional; CI runs the complete acceptance suite.
 
-This pre-commit hook performs automatic checks before finalizing your commit.
+- pre-commit checks formatting and native types, denying warnings.
+- commit-msg checks Conventional Commit subjects and permits merge commits.
+- pre-push runs native tests. It does not push by itself.
 
-### Usage Instructions
-
-To use this pre-commit hook:
-
-1. Make the hook executable if it isn't already:
-   ```bash
-   chmod +x .githooks/pre-commit
-   ```
-
-2. Configure Git to use the hooks in the .githooks directory:
-   ```bash
-   git config core.hooksPath .githooks
-   ```
-
-3. The hook will automatically run when you execute `git commit`
+The initial acceptance session is explicitly local: no Git push and no Mooncakes
+publication. Full commands and platform evidence are in docs/TESTING.md.

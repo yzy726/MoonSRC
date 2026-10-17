@@ -1,3 +1,6 @@
+#ifndef _WIN32
+#define _POSIX_C_SOURCE 200809L
+#endif
 /* Native file I/O only. No sample conversion or DSP is implemented in C. */
 #include "moonbit.h"
 #include <stdio.h>
@@ -9,6 +12,7 @@
 #include <io.h>
 #else
 #include <unistd.h>
+#include <fcntl.h>
 #endif
 
 static FILE *open_path(const char *path, int writing) {
@@ -24,7 +28,12 @@ static FILE *open_path(const char *path, int writing) {
   free(wide);
   return file;
 #else
-  return fopen(path, writing ? "wbx" : "rb");
+  if (writing) return fopen(path, "wbx");
+  int descriptor = open(path, O_RDONLY | O_NONBLOCK);
+  if (descriptor < 0) return NULL;
+  FILE *file = fdopen(descriptor, "rb");
+  if (!file) close(descriptor);
+  return file;
 #endif
 }
 

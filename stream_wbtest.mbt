@@ -7,3 +7,19 @@ test "stream/frame counter overflow is rejected before mutation" {
   )
   assert_eq(stream.input_count, 9223372036854775614L)
 }
+
+///|
+test "stream/integer phase clock has no long-run drift" {
+  for pair in [(44100, 48000), (48000, 44100)] {
+    let config = Config::new(pair.0, pair.1, 1).unwrap()
+    let stream = Resampler::new(config)
+    for _ in 0..<1000003 {
+      stream.advance()
+    }
+    assert_eq(
+      stream.position,
+      1000003L * config.denominator.to_int64() / config.numerator.to_int64(),
+    )
+    assert_eq(stream.phase, 1000003 * config.denominator % config.numerator)
+  }
+}
