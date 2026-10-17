@@ -1,0 +1,41 @@
+{
+  "status": "pass",
+  "backend": "native-release",
+  "input_rate": 48000,
+  "output_rate": 16000,
+  "input_frames": 48000,
+  "output_frames": 16000,
+  "amplitude": 0.5,
+  "trim_each_end_frames": 256,
+  "window": "rectangular, coherent 15488-frame interval",
+  "passband_frequency_hz": 1000,
+  "stopband_input_hz": 12000,
+  "alias_output_hz": 4000,
+  "passband_amplitude": 0.5000000718210619,
+  "passband_error_db": 1.2476595446707941e-06,
+  "alias_amplitude": 1.4742144735967556e-06,
+  "alias_relative_db": -110.60818792004197,
+  "passband_rms": 0.3535534413784334,
+  "alias_rms": 1.0424270512038136e-06,
+  "limits": {
+    "absolute_passband_error_db": 0.5,
+    "maximum_alias_relative_db": -50
+  },
+  "sha256": {
+    "passband.f64": "f27f93cbaf7eb5c37cef0b4a1db61e6bea6a2b232cc7907ce0abcf969256f9c7",
+    "alias.f64": "fa4319e2cd9639cf569220c84714cd14fa96304c79d6e1969b342df55c3b1cfe"
+  },
+  "toolchain": [
+    "moon 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moon.exe",
+    "moonc v0.10.14+7d59c7ec9 (2026-09-18) ~\\.moon\\bin\\moonc.exe",
+    "moonrun 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moonrun.exe",
+    "",
+    "Feature flags enabled: rr_moon_mod,rr_moon_pkg"
+  ],
+  "platform": "Windows-11-10.0.22631-SP0",
+  "python": "3.13.5",
+  "export_log": [
+    "frequency_in=1000 frames_in=48000 frames_out=16000",
+    "frequency_in=12000 frames_in=48000 frames_out=16000"
+  ]
+}

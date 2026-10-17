@@ -1,0 +1,21 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Ag108/MoonSRC/internal/signals"
+
+import {
+  "Ag108/MoonSRC",
+}
+
+// Values
+pub fn chunked(@MoonSRC.Config, ArrayView[Double], ArrayView[Int], Int) -> Result[Array[Double], @MoonSRC.ResampleError]
+
+pub fn magnitude(ArrayView[Double], Int, Double, Int) -> Double
+
+pub fn tone(Int, Double, Int, Int) -> Array[Double]
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits

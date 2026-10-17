@@ -1,0 +1,32 @@
+{
+  "status": "pass",
+  "count": 5,
+  "library_cli_byte_identical": true,
+  "results": [
+    {
+      "example": "memory_44100_to_48000",
+      "stdout": "input_frames=4410 output_frames=4800 channels=2",
+      "status": "pass"
+    },
+    {
+      "example": "speech_48000_to_16000",
+      "stdout": "synthetic_voice_band input_frames=48000 output_frames=16000 passband_error_db=0.0000012476595581713768 alias_relative_db=-110.60818792004201",
+      "status": "pass"
+    },
+    {
+      "example": "chunked_equivalence",
+      "stdout": "patterns=1,127,fixed_seed output_frames=2230 max_difference=0",
+      "status": "pass"
+    },
+    {
+      "example": "channel_isolation",
+      "stdout": "output_frames=4800 right_channel_peak=0",
+      "status": "pass"
+    },
+    {
+      "example": "wav_convert",
+      "stdout": "input_frames=441 output_frames=480 output_rate=48000 channels=2",
+      "status": "pass"
+    }
+  ]
+}

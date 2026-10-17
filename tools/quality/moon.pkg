@@ -1,0 +1,11 @@
+import {
+  "Ag108/MoonSRC" @src,
+  "Ag108/MoonSRC/internal/signals",
+  "Ag108/MoonSRC/internal/nativeio" @io,
+  "moonbitlang/core/env",
+  "moonbitlang/core/buffer",
+}
+
+pkgtype(kind: "executable")
+
+supported_targets = "native"
