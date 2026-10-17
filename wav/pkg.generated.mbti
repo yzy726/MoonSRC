@@ -1,0 +1,47 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Ag108/MoonSRC/wav"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn decode(Bytes) -> Result[Audio, WavError]
+
+pub fn encode(Int, Int, ArrayView[Double]) -> Result[Encoded, WavError]
+
+// Errors
+
+// Types and methods
+pub(all) struct Audio {
+  rate : Int
+  channels : Int
+  samples : Array[Double]
+}
+
+pub(all) struct Encoded {
+  bytes : Bytes
+  clipped_samples : Int
+}
+
+pub(all) enum WavError {
+  InvalidHeader
+  Truncated
+  UnsupportedFormat
+  InvalidFormat
+  InvalidChannels
+  InvalidRate
+  MissingFormat
+  MissingData
+  DuplicateChunk
+  FrameAlignment
+  NonFinite(Int)
+  ResourceLimit
+} derive(Eq, @debug.Debug)
+pub fn WavError::equal(Self, Self) -> Bool
+pub fn WavError::not_equal(Self, Self) -> Bool
+pub fn WavError::to_repr(Self) -> @debug.Repr
+
+// Type aliases
+
+// Traits
