@@ -21,6 +21,6 @@ license = "Apache-2.0"
 
 keywords = [ ]
 
-preferred_target = "wasm"
+preferred_target = "native"
 
-description = ""
+description = "Pure MoonBit bounded streaming sample rate conversion with anti-alias FIR filtering."

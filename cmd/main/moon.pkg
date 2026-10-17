@@ -1,5 +1,12 @@
-// import {
-//   "Ag108/MoonSRC" @lib,
-// }
+import {
+  "Ag108/MoonSRC" @src,
+  "Ag108/MoonSRC/wav",
+  "Ag108/MoonSRC/internal/nativeio" @io,
+  "moonbitlang/core/debug",
+  "moonbitlang/core/env",
+  "moonbitlang/core/math",
+}
 
 pkgtype(kind: "executable")
+
+supported_targets = "native"
