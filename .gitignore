@@ -1,0 +1,16 @@
+.DS_Store
+_build/
+target/
+target
+.mooncakes/
+.moonagent/
+项目申报书.md
+.agent-workplace/
+.moonreduce/
+__pycache__/
+*.py[cod]
+*-result/
+AGENTS.md
+goal.md
+docs/RELEASE.md
+docs/FINAL_ACCEPTANCE.md

@@ -1,0 +1,5 @@
+// import {
+//   "Ag108/MoonSRC" @lib,
+// }
+
+pkgtype(kind: "executable")
