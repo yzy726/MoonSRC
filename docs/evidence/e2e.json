@@ -1,0 +1,18 @@
+{
+  "status": "pass",
+  "flows": 12,
+  "checks": [
+    "help",
+    "synthetic_fixture",
+    "stereo_44100_to_48000_channel_isolation",
+    "identity_exact",
+    "mono_48000_to_16000",
+    "existing_output_preserved",
+    "malformed_input_no_output",
+    "arguments_missing_file_and_same_path",
+    "independent_direct_sinc_reference_within_one_pcm16_lsb",
+    "unicode_paths",
+    "oversized_and_nonregular_input_rejected_before_allocation",
+    "fixture_resource_budget"
+  ]
+}
