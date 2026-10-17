@@ -1,0 +1,15 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Ag108/MoonSRC/internal/filter"
+
+// Values
+pub const FILTER_RADIUS : Int = 96
+
+pub fn make_filter(Int, Double) -> Result[FixedArray[FixedArray[Double]], String]
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits

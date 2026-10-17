@@ -27,7 +27,7 @@ are consequently deferred, and must not be claimed as completed.
   process after finish starts is an error; reset explicitly starts a fresh stream.
 - Resource counters use Int64, checked before arithmetic. Finite samples whose
   filtering result cannot be represented return an explicit numeric error.
-- A root package separates model/clock/filter/stream/facade by file; pcm and wav
+- The root separates model/clock/stream/facade by file; internal/filter, pcm and wav
   are independent packages. WAV handles bytes only; native CLI owns file I/O.
   Dependencies flow model -> clock/filter -> stream -> facade -> CLI/examples.
   Keep implementation helpers private to avoid exporting incidental internals.
