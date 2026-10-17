@@ -1,0 +1,13 @@
+import {
+  "Ag108/MoonSRC" @src,
+  "moonbitlang/core/env",
+  "moonbitlang/core/string",
+}
+
+pkgtype(kind: "executable")
+
+supported_targets = "native"
+
+options(
+  "native-stub": [ "probe.c" ],
+)
