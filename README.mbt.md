@@ -43,7 +43,7 @@ python scripts/consumer.py
 
 消费项目的 `moon.pkg`：
 
-```mbt
+```mbt nocheck
 ///|
 import {
   "Ag108/MoonSRC",
@@ -52,7 +52,7 @@ import {
 
 一次性处理复用同一个流式引擎：
 
-```mbt
+```mbt check
 ///|
 test "readme/minimal stereo conversion" {
   let config = @MoonSRC.Config::new(44100, 48000, 2).unwrap()
