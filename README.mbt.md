@@ -1,22 +1,18 @@
-# MoonSRC 0.1.0
+# MoonSRC
 
 纯 MoonBit 的流式音频采样率转换库。使用带抗混叠低通的多相 Blackman sinc FIR，
 支持交错 PCM、有限输出缓冲区和明确的 `finish` 语义。
 
-本版本已完成**本地初验**，尚未发布 Mooncakes。
-本地记录见 [本地验收](docs/LOCAL_ACCEPTANCE.md)，远端验证见
-[GitHub Actions](https://github.com/yzy726/MoonSRC/actions/workflows/ci.yml)。
-
 ## 支持范围
 
-| 维度 | 0.1.0 |
-|---|---|
-| 比率 | 44100↔48000、48000↔16000 Hz；16000/44100/48000 同速率直通 |
-| 声道 | 1 或 2，交错排列 |
-| 样本 | 有限 Double；核心不截幅，拒绝 NaN/Infinity |
-| 核心后端 | native、JavaScript、wasm-gc，均有本机运行证据 |
-| WAV | RIFF/WAVE PCM16LE；native CLI；其他编码明确拒绝 |
-| 边界 | 两端零延拓；非同速率有 96 输入帧前瞻 |
+| 维度     | 功能                                                        |
+| -------- | ----------------------------------------------------------- |
+| 比率     | 44100↔48000、48000↔16000 Hz；16000/44100/48000 同速率直通 |
+| 声道     | 1 或 2，交错排列                                            |
+| 样本     | 有限 Double；核心不截幅，拒绝 NaN/Infinity                  |
+| 核心后端 | native、JavaScript、wasm-gc，均有本机运行证据               |
+| WAV      | RIFF/WAVE PCM16LE；native CLI；其他编码明确拒绝             |
+| 边界     | 两端零延拓；非同速率有 96 输入帧前瞻                        |
 
 最终输出帧数为 `ceil(N * output_rate / input_rate)`。帧数乘以声道数才是样本数。
 同速率路径逐样本保持原值；库的浮点输出没有 PCM16 量化。
@@ -41,14 +37,13 @@ python scripts/consumer.py
 ```
 
 `consumer.py` 用 `moon package` 生成 ZIP，解压到全新工作区，通过临时 `moon.work`
-让独立项目依赖本地包，并在三个后端运行。它不发布，也不从注册表安装。
-未来发布后的 Mooncakes 安装命令需在实际发布后另行核验。
+让独立项目依赖本地包，并在三个后端运行。
 
 ## 库调用
 
 消费项目的 `moon.pkg`：
 
-```mbt nocheck
+```mbt
 ///|
 import {
   "Ag108/MoonSRC",
@@ -57,7 +52,7 @@ import {
 
 一次性处理复用同一个流式引擎：
 
-```mbt check
+```mbt
 ///|
 test "readme/minimal stereo conversion" {
   let config = @MoonSRC.Config::new(44100, 48000, 2).unwrap()
