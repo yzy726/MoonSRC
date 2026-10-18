@@ -67,9 +67,7 @@ test "final_wav/float32 uses binary32 rounding without unit clipping" {
 
 ///|
 test "final_wav/invalid float overflow is classified" {
-  assert_true(
-    @wav.encode_float32(48000, 1, [1.0e100][:]) is Err(SampleOverflow(0)),
-  )
+  assert_true(@wav.encode_float32(48000, 1, [1.0e100][:]) is Err(NonFinite(0)))
 }
 
 ///|

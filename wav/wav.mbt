@@ -12,7 +12,6 @@ pub(all) enum WavError {
   DuplicateChunk
   FrameAlignment
   NonFinite(Int)
-  SampleOverflow(Int)
   ResourceLimit
 } derive(Debug, Eq)
 
@@ -246,7 +245,7 @@ fn encode_audio(
       return Err(NonFinite(i))
     }
     if floating && Float::from_double(samples[i]).to_double().is_inf() {
-      return Err(SampleOverflow(i))
+      return Err(NonFinite(i))
     }
   }
   let (data, clipped) = if floating {
@@ -309,7 +308,8 @@ pub fn encode(
 
 ///|
 /// Encode IEEE float32 without unit-range clipping. Rounds to binary32; rejects
-/// nonfinite input and finite values that overflow binary32. Includes fact; uses
+/// nonfinite input and values that become nonfinite in binary32 (NonFinite).
+/// Includes fact; uses
 /// an extensible header for >2 channels. clipped_samples is always zero.
 pub fn encode_float32(
   rate : Int,
