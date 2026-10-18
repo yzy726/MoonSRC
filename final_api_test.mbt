@@ -241,3 +241,26 @@ test "final_api/reset preserves quality and starts an unrelated stream" {
     }
   }
 }
+
+///|
+test "final_api/eight channel samples match independent mono paths" {
+  for pair in [(8000, 192000), (192000, 8000), (44100, 16000), (96000, 44100)] {
+    for quality in [@MoonSRC.LowLatency, Balanced, HighQuality] {
+      let input = Array::makei(97 * 8, i => {
+        ((i / 8 * 19 + i % 8 * 31) % 127).to_double() / 128.0 - 0.5
+      })
+      let c = @MoonSRC.Config::with_quality(pair.0, pair.1, 8, quality).unwrap()
+      let output = @MoonSRC.resample(c, input[:]).unwrap()
+      for channel in 0..<8 {
+        let mono = Array::makei(97, i => input[i * 8 + channel])
+        let reference = @MoonSRC.resample(
+          @MoonSRC.Config::with_quality(pair.0, pair.1, 1, quality).unwrap(),
+          mono[:],
+        ).unwrap()
+        for i in 0..<reference.length() {
+          assert_eq(output[i * 8 + channel], reference[i])
+        }
+      }
+    }
+  }
+}
