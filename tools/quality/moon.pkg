@@ -4,6 +4,7 @@ import {
   "Ag108/MoonSRC/internal/nativeio" @io,
   "moonbitlang/core/env",
   "moonbitlang/core/buffer",
+  "moonbitlang/core/string",
 }
 
 pkgtype(kind: "executable")
