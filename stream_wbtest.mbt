@@ -23,3 +23,16 @@ test "stream/integer phase clock has no long-run drift" {
     assert_eq(stream.phase, 1000003 * config.denominator % config.numerator)
   }
 }
+
+///|
+test "final_api/invalid expanded filter frame reserve is atomic" {
+  let s = Resampler::new(
+    Config::with_quality(192000, 8000, 8, HighQuality).unwrap(),
+  )
+  s.input_count = 9223372036854775807L - 3073L
+  assert_true(
+    s.process(Array::make(8, 0.0)[:], FixedArray::make(8, 0.0))
+    is Err(FrameOverflow),
+  )
+  assert_eq(s.input_count, 9223372036854775807L - 3073L)
+}

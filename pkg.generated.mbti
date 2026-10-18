@@ -8,6 +8,8 @@ import {
 // Values
 pub fn resample(Config, ArrayView[Double]) -> Result[Array[Double], ResampleError]
 
+pub fn resample_into(Config, ArrayView[Double], FixedArray[Double]) -> Result[Int, ResampleError]
+
 // Errors
 
 // Types and methods

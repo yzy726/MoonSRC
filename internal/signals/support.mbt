@@ -7,7 +7,7 @@ pub fn tone(
   frames : Int,
   channels : Int,
 ) -> Array[Double] {
-  if rate < 1 || frames < 0 || frames > 1048576 || channels < 1 || channels > 2 {
+  if rate < 1 || frames < 0 || frames > 1048576 || channels < 1 || channels > 8 {
     abort("invalid test signal budget")
   }
   Array::makei(frames * channels, i => {
