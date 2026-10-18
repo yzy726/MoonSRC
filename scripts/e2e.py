@@ -44,28 +44,62 @@ def quantize(value: float) -> int:
     return math.floor(limited + 0.5) if limited >= 0 else math.ceil(limited - 0.5)
 
 
-def reference(samples: list[int], in_rate: int, out_rate: int, channels: int) -> list[int]:
+def reference(samples: list[int], in_rate: int, out_rate: int, channels: int, quality: str = "balanced") -> list[int]:
     """Independent direct sinc evaluation; never used to convert product audio."""
     count = len(samples) // channels
     frames = (count * out_rate + in_rate - 1) // in_rate
-    cutoff = 0.94 * min(1.0, out_rate / in_rate)
+    base, rolloff = {"low": (32, .90), "balanced": (96, .94), "high": (192, .97)}[quality]
+    radius = base * max(1, (in_rate + 3*out_rate - 1)//(3*out_rate))
+    cutoff = rolloff * min(1.0, out_rate / in_rate)
     result = []
     for m in range(frames):
         center, remainder = divmod(m * in_rate, out_rate)
         fraction = remainder / out_rate
         weights = []
-        for tap in range(-96, 97):
+        for tap in range(-radius, radius + 1):
             x = tap - fraction
             z = math.pi * cutoff * x
-            window = 0.42 + 0.5 * math.cos(math.pi * x / 96) + 0.08 * math.cos(2 * math.pi * x / 96)
-            weights.append(0.0 if abs(x) >= 96 else cutoff * (1.0 if abs(z) < 1e-12 else math.sin(z) / z) * window)
+            window = 0.42 + 0.5 * math.cos(math.pi * x / radius) + 0.08 * math.cos(2 * math.pi * x / radius)
+            weights.append(0.0 if abs(x) >= radius else cutoff * (1.0 if abs(z) < 1e-12 else math.sin(z) / z) * window)
         norm = sum(weights)
         for channel in range(channels):
             value = sum(w / norm * samples[(center + tap) * channels + channel] / 32768
-                        for tap, w in zip(range(-96, 97), weights)
+                        for tap, w in zip(range(-radius, radius + 1), weights)
                         if 0 <= center + tap < count)
             result.append(quantize(value))
     return result
+
+
+def read_any(path: Path):
+    raw=path.read_bytes()
+    assert raw[:4]==b"RIFF" and raw[8:12]==b"WAVE"
+    assert struct.unpack_from("<I",raw,4)[0]+8==len(raw)
+    chunks={}; offset=12
+    while offset<len(raw):
+        tag=raw[offset:offset+4]; length=struct.unpack_from("<I",raw,offset+4)[0]
+        chunks[tag]=raw[offset+8:offset+8+length]; offset+=8+length+(length&1)
+    fmt=chunks[b"fmt "]
+    tag,ch,rate,byte_rate,align,bits=struct.unpack_from("<HHIIHH",fmt)
+    if tag==65534:
+        assert len(fmt)==40 and struct.unpack_from("<H",fmt,16)[0]==22
+        assert fmt[28:40]==bytes.fromhex("00001000800000aa00389b71")
+        tag=struct.unpack_from("<I",fmt,24)[0]
+    assert (tag,bits) in ((1,16),(3,32))
+    assert align==ch*bits//8 and byte_rate==rate*align
+    data=chunks[b"data"]; assert len(data)%align==0
+    values=list(struct.unpack("<"+str(len(data)//(bits//8))+("h" if tag==1 else "f"),data))
+    if tag==1: values=[v/32768 for v in values]
+    assert all(math.isfinite(v) for v in values)
+    return ch,rate,len(data)//align,values,tag
+
+
+def independent_float_wav(rate: int, channels: int, values: list[float]):
+    payload=struct.pack("<"+str(len(values))+"f",*values)
+    fmt=struct.pack("<HHIIHHH",3,channels,rate,rate*channels*4,channels*4,32,0)
+    if channels>2:
+        fmt=struct.pack("<HHIIHHHHI",65534,channels,rate,rate*channels*4,channels*4,32,22,32,0)+bytes.fromhex("0300000000001000800000aa00389b71")
+    chunks=b"fmt "+struct.pack("<I",len(fmt))+fmt+b"fact"+struct.pack("<II",4,len(values)//channels)+b"data"+struct.pack("<I",len(payload))+payload
+    return b"RIFF"+struct.pack("<I",len(chunks)+4)+b"WAVE"+chunks
 
 
 def main() -> None:
@@ -112,7 +146,7 @@ def main() -> None:
         run(exe, "convert", malformed, rejected, "--rate", 48000, ok=False)
         assert not rejected.exists()
         checks.append("malformed_input_no_output")
-        for extra in (("--rate", "no"), ("--rate", "8000"), ("--rate", "48000", "--rate", "16000")):
+        for extra in (("--rate", "no"), ("--rate", "7999"), ("--rate", "48000", "--rate", "16000")):
             run(exe, "convert", source, rejected, *extra, ok=False)
             assert not rejected.exists()
         run(exe, "convert", work / "missing.wav", rejected, "--rate", 48000, ok=False)
@@ -144,6 +178,57 @@ def main() -> None:
         run(exe, "fixture", rejected, "--rate", 48000, "--frames", 1000001, ok=False)
         assert not rejected.exists()
         checks.append("fixture_resource_budget")
+        six = work / "six.wav"
+        six_out = work / "six-out.wav"
+        run(exe,"fixture",six,"--rate",44100,"--channels",6,"--frames",441)
+        assert read_any(six)[:3]==(6,44100,441)
+        run(exe,"convert",six,six_out,"--rate",16000,"--quality","high","--format","float32")
+        sc,sr,sn,sv,st=read_any(six_out)
+        assert (sc,sr,sn,st)==(6,16000,160,3)
+        assert all(v==0 for i,v in enumerate(sv) if i%6!=0)
+        checks.append("six_channel_extensible_pcm_to_float32")
+        eight=work/"independent-eight.wav"
+        eight_out=work/"independent-eight-out.wav"
+        values=[2.0 if i%8==0 else .25 if i%8==7 else 0.0 for i in range(96*8)]
+        eight.write_bytes(independent_float_wav(96000,8,values))
+        run(exe,"convert",eight,eight_out,"--rate",96000,"--quality","low","--format","float32")
+        assert read_any(eight_out)==read_any(eight)
+        assert eight_out.read_bytes()==eight.read_bytes()
+        checks.append("independent_eight_channel_float_identity_no_clipping")
+        clipped=work/"eight-pcm.wav"
+        run(exe,"convert",eight,clipped,"--rate",96000,"--format","pcm16")
+        assert read_any(clipped)[3][0]==32767/32768
+        checks.append("float_to_pcm16_explicit_saturation")
+        for quality in ("low","balanced","high"):
+            qout=work/(quality+".wav")
+            info=run(exe,"convert",source,qout,"--rate",48000,"--quality",quality).stdout
+            assert "quality="+quality in info
+            expected=reference(samples,44100,48000,2,quality)
+            actual=read(qout)[3]
+            assert len(expected)==len(actual)
+            assert max(abs(a-b) for a,b in zip(expected,actual))<=1
+            checks.append("independent_direct_reference_"+quality)
+        for fin,fout,frames in ((8000,192000,8),(192000,8000,192)):
+            src=work/(str(fin)+".wav");dst=work/(str(fout)+"-out.wav")
+            run(exe,"fixture",src,"--rate",fin,"--frames",frames,"--format","float32")
+            run(exe,"convert",src,dst,"--rate",fout,"--quality","high","--format","float32")
+            assert read_any(dst)[:3]==(1,fout,(frames*fout+fin-1)//fin)
+            checks.append("extreme_rate_"+str(fin)+"_to_"+str(fout))
+        for index,value in enumerate((float("nan"),float("inf"))):
+            bad=work/("nonfinite"+str(index)+".wav")
+            bad.write_bytes(independent_float_wav(48000,1,[value]))
+            run(exe,"convert",bad,rejected,"--rate",16000,"--format","float32",ok=False)
+            assert not rejected.exists()
+            checks.append("float_nonfinite_rejected_"+str(index))
+        for options in (("--quality","ultra"),("--format","opus"),("--quality","low","--quality","high"),("--format","float32","--format","pcm16"),("--quality",)):
+            run(exe,"convert",source,rejected,"--rate",48000,*options,ok=False)
+            assert not rejected.exists()
+        checks.append("invalid_quality_format_and_duplicate_options")
+        empty=work/"empty-eight.wav"; empty_out=work/"empty-eight-out.wav"
+        run(exe,"fixture",empty,"--rate",8000,"--channels",8,"--frames",0,"--format","float32")
+        run(exe,"convert",empty,empty_out,"--rate",192000,"--format","float32")
+        assert read_any(empty_out)[:3]==(8,192000,0)
+        checks.append("empty_eight_channel_float_conversion")
     result = {"status": "pass", "flows": len(checks), "checks": checks}
     if args.report:
         args.report.parent.mkdir(parents=True, exist_ok=True)
