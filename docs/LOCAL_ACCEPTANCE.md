@@ -1,5 +1,8 @@
 # MoonSRC 0.1.0 本地初验
 
+本页保留 2026-10-17 本地交付时的范围与证据。2026-10-18 用户已授权推送 GitHub
+并验证 CI；后续远端结果见 [GitHub Actions](https://github.com/yzy726/MoonSRC/actions/workflows/ci.yml)。
+
 用户授权按 goal.md 完成初验，并在本次会话明确选择「仅本地，不发布 Mooncakes」。
 最终 20 条检查命令全部退出 0；native、js、wasm-gc 各 126 项测试通过。
 

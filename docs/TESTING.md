@@ -54,7 +54,8 @@ CI configuration uses the official versioned installer with
 0.10.14+7d59c7ec9. Its Linux bundle was checked reachable during setup. The installer
 syntax follows the [official project workflow](https://github.com/moonbitlang/llvm.mbt/blob/master/.github/workflows/check.yaml).
 CI has backend matrix and integration jobs, with the same local commands and
-saved evidence; it has not run remotely because this session performs no push.
+saved evidence. Remote runs and their exact commits are available in
+[GitHub Actions](https://github.com/yzy726/MoonSRC/actions/workflows/ci.yml).
 The existing Copilot setup workflow is preserved. Optional local hooks are
 documented in .githooks/README.md.
 
