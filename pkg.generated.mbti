@@ -21,7 +21,9 @@ pub fn Config::new(Int, Int, Int) -> Result[Self, ResampleError]
 pub fn Config::not_equal(Self, Self) -> Bool
 pub fn Config::output_frames(Self, Int64) -> Result[Int64, ResampleError]
 pub fn Config::output_rate(Self) -> Int
+pub fn Config::quality(Self) -> Quality
 pub fn Config::to_repr(Self) -> @debug.Repr
+pub fn Config::with_quality(Int, Int, Int, Quality) -> Result[Self, ResampleError]
 
 pub(all) struct Latency {
   input_frames : Int
@@ -36,6 +38,15 @@ pub(all) struct Progress {
   needs_output : Bool
   finished : Bool
 }
+
+pub(all) enum Quality {
+  LowLatency
+  Balanced
+  HighQuality
+} derive(Eq, @debug.Debug)
+pub fn Quality::equal(Self, Self) -> Bool
+pub fn Quality::not_equal(Self, Self) -> Bool
+pub fn Quality::to_repr(Self) -> @debug.Repr
 
 pub(all) enum ResampleError {
   InvalidRate(Int)

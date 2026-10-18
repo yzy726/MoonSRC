@@ -25,21 +25,17 @@ test "model/allowed ratios and channel layouts" {
 
 ///|
 test "model/invalid configuration is classified" {
-  for rate in [-1, 0, 8000, 192000, 2147483647] {
+  for rate in [-1, 0, 7999, 192001, 2147483647] {
     assert_true(@MoonSRC.Config::new(rate, 48000, 1) is Err(InvalidRate(_)))
     assert_true(@MoonSRC.Config::new(48000, rate, 1) is Err(InvalidRate(_)))
   }
-  for channels in [-1, 0, 3, 8, 2147483647] {
+  for channels in [-1, 0, 9, 16, 2147483647] {
     assert_true(
       @MoonSRC.Config::new(48000, 16000, channels) is Err(InvalidChannels(_)),
     )
   }
-  assert_true(
-    @MoonSRC.Config::new(44100, 16000, 1) is Err(UnsupportedRatio(_, _)),
-  )
-  assert_true(
-    @MoonSRC.Config::new(16000, 44100, 1) is Err(UnsupportedRatio(_, _)),
-  )
+  assert_true(@MoonSRC.Config::new(8000, 8001, 1) is Err(ResourceLimit))
+  assert_true(@MoonSRC.Config::new(8001, 8000, 1) is Err(ResourceLimit))
 }
 
 ///|

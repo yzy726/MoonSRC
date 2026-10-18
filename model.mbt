@@ -21,35 +21,87 @@ pub struct Config {
   priv channels : Int
   priv numerator : Int
   priv denominator : Int
+  priv quality : Quality
 } derive(Debug, Eq)
 
 ///|
-/// Accept the 0.1.0 rate matrix and one or two channels. No allocation occurs.
+/// Accept fixed rates 8000..192000 Hz and 1..8 channels, using Balanced quality.
+/// Exact phase/coefficient budgets are checked before construction allocates.
 pub fn Config::new(
   input_rate : Int,
   output_rate : Int,
   channels : Int,
 ) -> Result[Config, ResampleError] {
-  if input_rate != 16000 && input_rate != 44100 && input_rate != 48000 {
+  Config::with_quality(input_rate, output_rate, channels, Balanced)
+}
+
+///|
+/// Quality presets with increasing filter support and distinct cutoff rolloffs.
+/// Balanced retains the 0.1.0 behavior for every previously supported pair.
+pub(all) enum Quality {
+  LowLatency
+  Balanced
+  HighQuality
+} derive(Debug, Eq)
+
+///|
+pub extend Quality with @debug.Debug::{to_repr}
+
+///|
+pub extend Quality with Eq::{equal, not_equal}
+
+///|
+fn Quality::base_radius(self : Quality) -> Int {
+  match self {
+    LowLatency => 32
+    Balanced => 96
+    HighQuality => 192
+  }
+}
+
+///|
+/// Validate the full configuration without allocation. At most 4096 exact phases
+/// and 1048576 coefficient Doubles. Extreme co-prime pairs return ResourceLimit.
+pub fn Config::with_quality(
+  input_rate : Int,
+  output_rate : Int,
+  channels : Int,
+  quality : Quality,
+) -> Result[Config, ResampleError] {
+  if input_rate < 8000 || input_rate > 192000 {
     return Err(InvalidRate(input_rate))
   }
-  if output_rate != 16000 && output_rate != 44100 && output_rate != 48000 {
+  if output_rate < 8000 || output_rate > 192000 {
     return Err(InvalidRate(output_rate))
   }
-  if channels < 1 || channels > 2 {
+  if channels < 1 || channels > 8 {
     return Err(InvalidChannels(channels))
   }
-  if input_rate != output_rate && input_rate != 48000 && output_rate != 48000 {
-    return Err(UnsupportedRatio(input_rate, output_rate))
-  }
   let divisor = gcd(input_rate, output_rate)
+  let numerator = output_rate / divisor
+  let scale = ((input_rate + 3 * output_rate - 1) / (3 * output_rate)).max(1)
+  let radius = if input_rate == output_rate {
+    0
+  } else {
+    quality.base_radius() * scale
+  }
+  if numerator > 4096 || numerator * (2 * radius + 1) > 1048576 {
+    return Err(ResourceLimit)
+  }
   Ok({
     input_rate,
     output_rate,
     channels,
-    numerator: output_rate / divisor,
+    numerator,
     denominator: input_rate / divisor,
+    quality,
   })
+}
+
+///|
+/// Selected immutable quality preset.
+pub fn Config::quality(self : Config) -> Quality {
+  self.quality
 }
 
 ///|

@@ -6,6 +6,8 @@ pub const FILTER_RADIUS : Int = 96
 
 pub fn make_filter(Int, Double) -> Result[FixedArray[FixedArray[Double]], String]
 
+pub fn make_filter_with_options(Int, Double, Int) -> Result[FixedArray[FixedArray[Double]], String]
+
 // Errors
 
 // Types and methods
