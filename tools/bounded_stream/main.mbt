@@ -1,10 +1,4 @@
 ///|
-extern "C" fn monotonic_seconds() -> Double = "moonsrc_probe_seconds"
-
-///|
-extern "C" fn process_rss(peak : Int) -> Int64 = "moonsrc_probe_rss"
-
-///|
 fn feed(
   stream : @src.Resampler,
   input : Array[Double],
@@ -70,12 +64,12 @@ fn main {
   let output = FixedArray::make(128 * channels, 0.0)
   ignore(feed(stream, input, output, channels, 48000))
   stream.reset()
-  let rss_before = process_rss(0)
-  let start = monotonic_seconds()
+  let rss_before = @probe.rss(false)
+  let start = @probe.seconds()
   let checksum = feed(stream, input, output, channels, seconds * input_rate)
-  let elapsed = monotonic_seconds() - start
-  let rss_after = process_rss(0)
-  let rss_peak = process_rss(1)
+  let elapsed = @probe.seconds() - start
+  let rss_after = @probe.rss(false)
+  let rss_peak = @probe.rss(true)
   let stats = stream.stats()
   println(
     "{\"audio_seconds\":\{seconds},\"input_rate\":\{input_rate},\"output_rate\":\{output_rate},\"channels\":\{channels},\"input_frames\":\{stats.input_frames},\"output_frames\":\{stats.output_frames},\"peak_history_frames\":\{stats.peak_history_frames},\"history_capacity_samples\":\{stats.history_capacity_samples},\"coefficient_samples\":\{stats.coefficient_samples},\"internal_samples\":\{stats.internal_samples},\"input_block_frames\":257,\"output_capacity_frames\":128,\"elapsed_seconds\":\{elapsed},\"input_frames_per_second\":\{stats.input_frames.to_double() / elapsed},\"rss_before_bytes\":\{rss_before},\"rss_after_bytes\":\{rss_after},\"process_peak_rss_bytes\":\{rss_peak},\"checksum\":\{checksum}}",
