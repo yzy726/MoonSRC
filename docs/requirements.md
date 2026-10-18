@@ -59,3 +59,7 @@ whitebox tests only for phase/filter invariants. Deterministic seeds, no private
 recordings. Each step passes fmt/check/test and interface review before commit.
 Maintain versioned generated interfaces, automated quality checks and sources.
 0.1.0 is an initial API baseline; future incompatible changes need release notes.
+
+## Final acceptance 0.2.0 authorization
+
+On 2026-10-18 the user requested completion of the final goals with version 0.2.0. docs/FINAL_SCOPE.md defines the supported matrix, additive APIs and fixed acceptance thresholds. The architecture and target backends continue the existing design approved through goal.md. Each task is committed locally as yzy726. The user explicitly excluded GitHub push and remote CI for this run; Mooncakes publication is deferred.
