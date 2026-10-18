@@ -1,4 +1,4 @@
-"""Build and execute all five published examples with observable assertions."""
+"""Build and execute all nine executable examples with observable assertions."""
 import argparse
 import json
 from pathlib import Path
@@ -7,7 +7,7 @@ import tempfile
 import wave
 
 ROOT = Path(__file__).resolve().parents[1]
-NAMES = ["memory_44100_to_48000", "speech_48000_to_16000", "chunked_equivalence", "channel_isolation", "wav_convert"]
+NAMES = ["memory_44100_to_48000", "speech_48000_to_16000", "chunked_equivalence", "channel_isolation", "wav_convert", "multichannel_6ch", "quality_tradeoff", "bounded_stream", "consumer_from_mooncakes"]
 
 
 def binary(folder, name):
@@ -32,6 +32,13 @@ def main():
                 command += [str(source), str(output)]
             result = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, check=True)
             assert result.stdout.strip(), name
+            expected = {
+                "multichannel_6ch": ["channels=6", "isolated=6"],
+                "quality_tradeoff": ["quality=low", "quality=balanced", "quality=high", "elapsed_seconds="],
+                "bounded_stream": ["frames_out=960000", "peak_history_frames=193"],
+                "consumer_from_mooncakes": ["public_api_consumer frames=480"],
+            }
+            assert all(token in result.stdout for token in expected.get(name, [])), result.stdout
             results.append({"example": name, "stdout": result.stdout.strip(), "status": "pass"})
         with wave.open(str(output), "rb") as wav:
             assert (wav.getframerate(), wav.getnchannels(), wav.getnframes()) == (48000, 2, 480)

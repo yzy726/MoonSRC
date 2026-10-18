@@ -1,0 +1,15 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Ag108/MoonSRC/internal/probe"
+
+// Values
+pub fn rss(Bool) -> Int64
+
+pub fn seconds() -> Double
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits

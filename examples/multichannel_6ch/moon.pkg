@@ -1,0 +1,6 @@
+import {
+  "Ag108/MoonSRC" @src,
+  "moonbitlang/core/math",
+}
+
+pkgtype(kind: "executable")

@@ -1,0 +1,7 @@
+import {
+  "Ag108/MoonSRC" @src,
+  "Ag108/MoonSRC/wav",
+  "Ag108/MoonSRC/pcm",
+}
+
+pkgtype(kind: "executable")
