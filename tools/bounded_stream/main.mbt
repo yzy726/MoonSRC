@@ -40,8 +40,10 @@ fn feed(
 ///|
 fn main {
   let args = @env.args()
-  if args.length() != 5 {
-    abort("usage: bounded_stream SECONDS INPUT_RATE OUTPUT_RATE CHANNELS")
+  if args.length() != 5 && args.length() != 6 {
+    abort(
+      "usage: bounded_stream SECONDS INPUT_RATE OUTPUT_RATE CHANNELS [low|balanced|high]",
+    )
   }
   let seconds = @string.parse_int(args[1]) catch {
     _ => abort("invalid duration")
@@ -58,11 +60,31 @@ fn main {
   if seconds < 1 || seconds > 600 {
     abort("duration outside probe budget")
   }
-  let config = @src.Config::new(input_rate, output_rate, channels).unwrap()
+  let quality : @src.Quality = if args.length() == 6 {
+    match args[5] {
+      "low" => LowLatency
+      "balanced" => Balanced
+      "high" => HighQuality
+      _ => abort("invalid quality")
+    }
+  } else {
+    Balanced
+  }
+  let quality_name = match quality {
+    LowLatency => "low"
+    Balanced => "balanced"
+    HighQuality => "high"
+  }
+  let config = @src.Config::with_quality(
+    input_rate, output_rate, channels, quality,
+  ).unwrap()
+  let initialization_start = @probe.seconds()
   let stream = @src.Resampler::new(config)
+  let initialization = @probe.seconds() - initialization_start
   let input = Array::make(257 * channels, 0.25)
   let output = FixedArray::make(128 * channels, 0.0)
-  ignore(feed(stream, input, output, channels, 48000))
+  let warmup = if args.length() == 5 { 48000 } else { input_rate / 10 }
+  ignore(feed(stream, input, output, channels, warmup))
   stream.reset()
   let rss_before = @probe.rss(false)
   let start = @probe.seconds()
@@ -72,6 +94,6 @@ fn main {
   let rss_peak = @probe.rss(true)
   let stats = stream.stats()
   println(
-    "{\"audio_seconds\":\{seconds},\"input_rate\":\{input_rate},\"output_rate\":\{output_rate},\"channels\":\{channels},\"input_frames\":\{stats.input_frames},\"output_frames\":\{stats.output_frames},\"peak_history_frames\":\{stats.peak_history_frames},\"history_capacity_samples\":\{stats.history_capacity_samples},\"coefficient_samples\":\{stats.coefficient_samples},\"internal_samples\":\{stats.internal_samples},\"input_block_frames\":257,\"output_capacity_frames\":128,\"elapsed_seconds\":\{elapsed},\"input_frames_per_second\":\{stats.input_frames.to_double() / elapsed},\"rss_before_bytes\":\{rss_before},\"rss_after_bytes\":\{rss_after},\"process_peak_rss_bytes\":\{rss_peak},\"checksum\":\{checksum}}",
+    "{\"quality\":\"\{quality_name}\",\"initialization_seconds\":\{initialization},\"warmup_input_frames\":\{warmup},\"audio_seconds\":\{seconds},\"input_rate\":\{input_rate},\"output_rate\":\{output_rate},\"channels\":\{channels},\"input_frames\":\{stats.input_frames},\"output_frames\":\{stats.output_frames},\"peak_history_frames\":\{stats.peak_history_frames},\"history_capacity_samples\":\{stats.history_capacity_samples},\"coefficient_samples\":\{stats.coefficient_samples},\"internal_samples\":\{stats.internal_samples},\"input_block_frames\":257,\"output_capacity_frames\":128,\"elapsed_seconds\":\{elapsed},\"input_frames_per_second\":\{stats.input_frames.to_double() / elapsed},\"rss_before_bytes\":\{rss_before},\"rss_after_bytes\":\{rss_after},\"process_peak_rss_bytes\":\{rss_peak},\"checksum\":\{checksum}}",
   )
 }
