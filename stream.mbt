@@ -56,14 +56,22 @@ pub struct Resampler {
 /// Construct a bounded filter and ring. Config can only be created by validation.
 pub fn Resampler::new(config : Config) -> Resampler {
   let identity = config.input_rate == config.output_rate
-  let radius = if identity { 0 } else { @filter.FILTER_RADIUS }
+  let scale = ((config.input_rate + 3 * config.output_rate - 1) /
+  (3 * config.output_rate)).max(1)
+  let radius = if identity { 0 } else { config.quality.base_radius() * scale }
+  let rolloff = match config.quality {
+    LowLatency => 0.90
+    Balanced => 0.94
+    HighQuality => 0.97
+  }
   let ratio = config.output_rate.to_double() / config.input_rate.to_double()
   let coefficients = if identity {
     FixedArray::make(0, FixedArray::make(0, 0.0))
   } else {
-    @filter.make_filter(
+    @filter.make_filter_with_options(
       config.numerator,
-      0.94 * (if ratio < 1.0 { ratio } else { 1.0 }),
+      rolloff * (if ratio < 1.0 { ratio } else { 1.0 }),
+      radius,
     ).unwrap()
   }
   let capacity = if identity { 0 } else { 2 * radius + 8 }
@@ -216,7 +224,8 @@ pub fn Resampler::process(
     }
   }
   let offered = input.length() / channels
-  if self.input_count > 9223372036854775614L - offered.to_int64() {
+  if self.input_count >
+    9223372036854775807L - (2 * self.radius + 1).to_int64() - offered.to_int64() {
     return Err(FrameOverflow)
   }
   match self.config.output_frames(self.input_count + offered.to_int64()) {
