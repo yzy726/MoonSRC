@@ -32,7 +32,32 @@ fn main {
   if stream.stats().output_frames != 480L {
     abort("wrong stream frame count")
   }
+  let legacy_tag = match @wav.decode(b"RIFF") {
+    Err(error) => legacy_error_tag(error)
+    Ok(_) => abort("malformed WAV unexpectedly accepted")
+  }
+  if legacy_tag != 1 {
+    abort("0.1.0 error contract changed")
+  }
   println(
     "public_api_consumer frames=480 channels=2 lookahead_in=\{stream.latency().input_frames}",
   )
+}
+
+///|
+fn legacy_error_tag(error : @wav.WavError) -> Int {
+  match error {
+    InvalidHeader => 0
+    Truncated => 1
+    UnsupportedFormat => 2
+    InvalidFormat => 3
+    InvalidChannels => 4
+    InvalidRate => 5
+    MissingFormat => 6
+    MissingData => 7
+    DuplicateChunk => 8
+    FrameAlignment => 9
+    NonFinite(_) => 10
+    ResourceLimit => 11
+  }
 }

@@ -1,0 +1,34 @@
+{
+  "status": "pass",
+  "source": "Mooncakes registry, explicitly pinned, no local library member",
+  "library_version": "0.1.0",
+  "registry_install": true,
+  "published": true,
+  "targets": [
+    {
+      "target": "native",
+      "status": "pass",
+      "stdout": [
+        "public_api_consumer frames=480 channels=2 lookahead_in=96"
+      ]
+    },
+    {
+      "target": "js",
+      "status": "pass",
+      "stdout": [
+        "public_api_consumer frames=480 channels=2 lookahead_in=96"
+      ]
+    },
+    {
+      "target": "wasm-gc",
+      "status": "pass",
+      "stdout": [
+        "public_api_consumer frames=480 channels=2 lookahead_in=96"
+      ]
+    }
+  ],
+  "dependency_tree": "local/moonsrc_consumer@0.1.0 (local E:\\moonbit\\MoonSRC\\_build\\moonsrc-consumer-z741xahq\\consumer):\n\u2514\u2500 Ag108/MoonSRC -> Ag108/MoonSRC@0.1.0",
+  "private_files_excluded": null,
+  "archive_source_hashes": null,
+  "root_workspace_unchanged": true
+}
