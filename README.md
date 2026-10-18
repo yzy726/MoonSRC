@@ -3,8 +3,9 @@
 纯 MoonBit 的流式音频采样率转换库。使用带抗混叠低通的多相 Blackman sinc FIR，
 支持交错 PCM、有限输出缓冲区和明确的 `finish` 语义。
 
-本版本已完成**本地初验**，尚未发布 Mooncakes，也未推送 GitHub。
-完整记录见 [本地验收](docs/LOCAL_ACCEPTANCE.md)。
+本版本已完成**本地初验**，尚未发布 Mooncakes。
+本地记录见 [本地验收](docs/LOCAL_ACCEPTANCE.md)，远端验证见
+[GitHub Actions](https://github.com/yzy726/MoonSRC/actions/workflows/ci.yml)。
 
 ## 支持范围
 
