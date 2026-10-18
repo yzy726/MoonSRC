@@ -1,0 +1,52 @@
+{
+  "status": "pass",
+  "count": 9,
+  "library_cli_byte_identical": true,
+  "results": [
+    {
+      "example": "memory_44100_to_48000",
+      "stdout": "input_frames=4410 output_frames=4800 channels=2",
+      "status": "pass"
+    },
+    {
+      "example": "speech_48000_to_16000",
+      "stdout": "synthetic_voice_band input_frames=48000 output_frames=16000 passband_error_db=0.0000012476595581713768 alias_relative_db=-110.60818792004201",
+      "status": "pass"
+    },
+    {
+      "example": "chunked_equivalence",
+      "stdout": "patterns=1,127,fixed_seed output_frames=2230 max_difference=0",
+      "status": "pass"
+    },
+    {
+      "example": "channel_isolation",
+      "stdout": "output_frames=4800 right_channel_peak=0",
+      "status": "pass"
+    },
+    {
+      "example": "wav_convert",
+      "stdout": "input_frames=441 output_frames=480 output_rate=48000 channels=2",
+      "status": "pass"
+    },
+    {
+      "example": "multichannel_6ch",
+      "stdout": "multichannel frames_in=2048 frames_out=744 channels=6 isolated=6",
+      "status": "pass"
+    },
+    {
+      "example": "quality_tradeoff",
+      "stdout": "quality=low frames_out=16000 passband_db=0.000009002226537875716 alias_db=-91.7850466593708 lookahead=32 coefficient_samples=65 elapsed_seconds=0.008843699999488308\nquality=balanced frames_out=16000 passband_db=0.0000011649828694479895 alias_db=-110.6081878373653 lookahead=96 coefficient_samples=193 elapsed_seconds=0.021684699999241275\nquality=high frames_out=16000 passband_db=5.095817024629283e-8 alias_db=-127.0518226043956 lookahead=192 coefficient_samples=385 elapsed_seconds=0.04105150000032154",
+      "status": "pass"
+    },
+    {
+      "example": "bounded_stream",
+      "stdout": "bounded_stream seconds=60 frames_out=960000 peak_history_frames=193 internal_samples=393 checksum=239999.9406625735",
+      "status": "pass"
+    },
+    {
+      "example": "consumer_from_mooncakes",
+      "stdout": "public_api_consumer frames=480 channels=2 lookahead_in=96",
+      "status": "pass"
+    }
+  ]
+}

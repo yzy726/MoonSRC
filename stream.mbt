@@ -158,22 +158,49 @@ fn Resampler::emit(
   offset : Int,
 ) -> Result[Unit, ResampleError] {
   let row = self.coefficients[self.phase]
-  for channel in 0..<self.config.channels {
-    let mut sum = 0.0
+  let channels = self.config.channels
+  if channels > 2 {
+    let base = offset * channels
+    for channel in 0..<channels {
+      output[base + channel] = 0.0
+    }
     for tap in 0..<row.length() {
       let frame = self.position + (tap - self.radius).to_int64()
       if frame >= 0L && frame < self.input_count {
-        let index = (frame % self.capacity.to_int64()).to_int() *
-          self.config.channels +
-          channel
-        sum += row[tap] * self.history[index]
+        let history_base = (frame % self.capacity.to_int64()).to_int() *
+          channels
+        let coefficient = row[tap]
+        for channel in 0..<channels {
+          output[base + channel] += coefficient *
+            self.history[history_base + channel]
+        }
       }
     }
-    if sum.is_nan() || sum.is_inf() {
-      self.state = Failed
-      return Err(NumericOverflow)
+    for channel in 0..<channels {
+      let value = output[base + channel]
+      if value.is_nan() || value.is_inf() {
+        self.state = Failed
+        return Err(NumericOverflow)
+      }
     }
-    output[offset * self.config.channels + channel] = sum
+  } else {
+    for channel in 0..<self.config.channels {
+      let mut sum = 0.0
+      for tap in 0..<row.length() {
+        let frame = self.position + (tap - self.radius).to_int64()
+        if frame >= 0L && frame < self.input_count {
+          let index = (frame % self.capacity.to_int64()).to_int() *
+            self.config.channels +
+            channel
+          sum += row[tap] * self.history[index]
+        }
+      }
+      if sum.is_nan() || sum.is_inf() {
+        self.state = Failed
+        return Err(NumericOverflow)
+      }
+      output[offset * self.config.channels + channel] = sum
+    }
   }
   self.output_count += 1L
   Ok(())

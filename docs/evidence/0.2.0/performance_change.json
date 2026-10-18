@@ -1,0 +1,226 @@
+{
+  "status": "pass",
+  "change": "Reuse each history index across >2 channels, preserving per-channel tap order; mono/stereo use original loop; no added buffers or API change",
+  "before_report": "bounded_stream.json",
+  "after_report": "bounded_stream_optimized.json",
+  "trials_per_configuration": 3,
+  "scope": "Native-release constant .25 signals, fixed buffers, one-second audio. Ratios are local observations, no universal speedup or hard real-time guarantee.",
+  "cases": [
+    {
+      "input_rate": 44100,
+      "output_rate": 48000,
+      "channels": 8,
+      "quality": "low",
+      "before_median_seconds": 0.08446990000084043,
+      "after_median_seconds": 0.05258940000021539,
+      "ratio_before_over_after": 1.6062153209676182
+    },
+    {
+      "input_rate": 44100,
+      "output_rate": 48000,
+      "channels": 8,
+      "quality": "balanced",
+      "before_median_seconds": 0.2429917999997997,
+      "after_median_seconds": 0.1589871000014682,
+      "ratio_before_over_after": 1.5283743146302795
+    },
+    {
+      "input_rate": 44100,
+      "output_rate": 48000,
+      "channels": 8,
+      "quality": "high",
+      "before_median_seconds": 0.4886043000005884,
+      "after_median_seconds": 0.2999363999988418,
+      "ratio_before_over_after": 1.6290263535952125
+    },
+    {
+      "input_rate": 48000,
+      "output_rate": 44100,
+      "channels": 8,
+      "quality": "low",
+      "before_median_seconds": 0.07780319999983476,
+      "after_median_seconds": 0.050101099999665166,
+      "ratio_before_over_after": 1.5529239877039571
+    },
+    {
+      "input_rate": 48000,
+      "output_rate": 44100,
+      "channels": 8,
+      "quality": "balanced",
+      "before_median_seconds": 0.2299660999997286,
+      "after_median_seconds": 0.13614109999980428,
+      "ratio_before_over_after": 1.6891746871448756
+    },
+    {
+      "input_rate": 48000,
+      "output_rate": 44100,
+      "channels": 8,
+      "quality": "high",
+      "before_median_seconds": 0.45779749999928754,
+      "after_median_seconds": 0.2765815000002476,
+      "ratio_before_over_after": 1.6551992812204637
+    },
+    {
+      "input_rate": 48000,
+      "output_rate": 16000,
+      "channels": 8,
+      "quality": "low",
+      "before_median_seconds": 0.030406500000026426,
+      "after_median_seconds": 0.01842639999995299,
+      "ratio_before_over_after": 1.6501595536894889
+    },
+    {
+      "input_rate": 48000,
+      "output_rate": 16000,
+      "channels": 8,
+      "quality": "balanced",
+      "before_median_seconds": 0.08151300000099582,
+      "after_median_seconds": 0.05318020000049728,
+      "ratio_before_over_after": 1.5327697150487136
+    },
+    {
+      "input_rate": 48000,
+      "output_rate": 16000,
+      "channels": 8,
+      "quality": "high",
+      "before_median_seconds": 0.16198350000013306,
+      "after_median_seconds": 0.0989292000012938,
+      "ratio_before_over_after": 1.63736793583709
+    },
+    {
+      "input_rate": 16000,
+      "output_rate": 48000,
+      "channels": 8,
+      "quality": "low",
+      "before_median_seconds": 0.08293810000031954,
+      "after_median_seconds": 0.05260629999975208,
+      "ratio_before_over_after": 1.5765811319311642
+    },
+    {
+      "input_rate": 16000,
+      "output_rate": 48000,
+      "channels": 8,
+      "quality": "balanced",
+      "before_median_seconds": 0.2403414000000339,
+      "after_median_seconds": 0.14671659999839903,
+      "ratio_before_over_after": 1.6381336536060438
+    },
+    {
+      "input_rate": 16000,
+      "output_rate": 48000,
+      "channels": 8,
+      "quality": "high",
+      "before_median_seconds": 0.4799040999987483,
+      "after_median_seconds": 0.2899838000012096,
+      "ratio_before_over_after": 1.6549341721735713
+    },
+    {
+      "input_rate": 44100,
+      "output_rate": 16000,
+      "channels": 8,
+      "quality": "low",
+      "before_median_seconds": 0.028255300001546857,
+      "after_median_seconds": 0.01842899999974179,
+      "ratio_before_over_after": 1.5331976776788074
+    },
+    {
+      "input_rate": 44100,
+      "output_rate": 16000,
+      "channels": 8,
+      "quality": "balanced",
+      "before_median_seconds": 0.08045280000078492,
+      "after_median_seconds": 0.04960600000049453,
+      "ratio_before_over_after": 1.621836068217209
+    },
+    {
+      "input_rate": 44100,
+      "output_rate": 16000,
+      "channels": 8,
+      "quality": "high",
+      "before_median_seconds": 0.1591461000007257,
+      "after_median_seconds": 0.10372450000068056,
+      "ratio_before_over_after": 1.5343154221006754
+    },
+    {
+      "input_rate": 96000,
+      "output_rate": 44100,
+      "channels": 8,
+      "quality": "low",
+      "before_median_seconds": 0.07822029999988445,
+      "after_median_seconds": 0.05000980000113486,
+      "ratio_before_over_after": 1.5640994364726395
+    },
+    {
+      "input_rate": 96000,
+      "output_rate": 44100,
+      "channels": 8,
+      "quality": "balanced",
+      "before_median_seconds": 0.22154589999991003,
+      "after_median_seconds": 0.14438099999824772,
+      "ratio_before_over_after": 1.534453286807813
+    },
+    {
+      "input_rate": 96000,
+      "output_rate": 44100,
+      "channels": 8,
+      "quality": "high",
+      "before_median_seconds": 0.4537211999995634,
+      "after_median_seconds": 0.2686619999985851,
+      "ratio_before_over_after": 1.6888179199215108
+    },
+    {
+      "input_rate": 8000,
+      "output_rate": 192000,
+      "channels": 8,
+      "quality": "low",
+      "before_median_seconds": 0.3319353000006231,
+      "after_median_seconds": 0.21299899999939953,
+      "ratio_before_over_after": 1.558389006528476
+    },
+    {
+      "input_rate": 8000,
+      "output_rate": 192000,
+      "channels": 8,
+      "quality": "balanced",
+      "before_median_seconds": 0.9727940000011586,
+      "after_median_seconds": 0.6166837999990094,
+      "ratio_before_over_after": 1.577459955981852
+    },
+    {
+      "input_rate": 8000,
+      "output_rate": 192000,
+      "channels": 8,
+      "quality": "high",
+      "before_median_seconds": 1.9625230000001466,
+      "after_median_seconds": 1.1681789999984176,
+      "ratio_before_over_after": 1.6799848310942116
+    },
+    {
+      "input_rate": 192000,
+      "output_rate": 8000,
+      "channels": 8,
+      "quality": "low",
+      "before_median_seconds": 0.11483419999967737,
+      "after_median_seconds": 0.06863909999992757,
+      "ratio_before_over_after": 1.6730143606165953
+    },
+    {
+      "input_rate": 192000,
+      "output_rate": 8000,
+      "channels": 8,
+      "quality": "balanced",
+      "before_median_seconds": 0.337811999999758,
+      "after_median_seconds": 0.203831300001184,
+      "ratio_before_over_after": 1.6573117082498896
+    },
+    {
+      "input_rate": 192000,
+      "output_rate": 8000,
+      "channels": 8,
+      "quality": "high",
+      "before_median_seconds": 0.6642660999987129,
+      "after_median_seconds": 0.3961455000007845,
+      "ratio_before_over_after": 1.6768235408389023
+    }
+  ]
+}

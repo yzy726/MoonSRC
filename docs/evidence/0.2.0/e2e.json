@@ -1,0 +1,30 @@
+{
+  "status": "pass",
+  "flows": 24,
+  "checks": [
+    "help",
+    "synthetic_fixture",
+    "stereo_44100_to_48000_channel_isolation",
+    "identity_exact",
+    "mono_48000_to_16000",
+    "existing_output_preserved",
+    "malformed_input_no_output",
+    "arguments_missing_file_and_same_path",
+    "independent_direct_sinc_reference_within_one_pcm16_lsb",
+    "unicode_paths",
+    "oversized_and_nonregular_input_rejected_before_allocation",
+    "fixture_resource_budget",
+    "six_channel_extensible_pcm_to_float32",
+    "independent_eight_channel_float_identity_no_clipping",
+    "float_to_pcm16_explicit_saturation",
+    "independent_direct_reference_low",
+    "independent_direct_reference_balanced",
+    "independent_direct_reference_high",
+    "extreme_rate_8000_to_192000",
+    "extreme_rate_192000_to_8000",
+    "float_nonfinite_rejected_0",
+    "float_nonfinite_rejected_1",
+    "invalid_quality_format_and_duplicate_options",
+    "empty_eight_channel_float_conversion"
+  ]
+}
