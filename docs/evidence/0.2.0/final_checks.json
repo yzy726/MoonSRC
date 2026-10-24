@@ -1,0 +1,445 @@
+{
+  "version": "0.2.0",
+  "scope": "local final acceptance only",
+  "status": "pass",
+  "started_at": "2026-10-18T09:14:06.071603+00:00",
+  "updated_at": "2026-10-18T09:21:26.461509+00:00",
+  "push": false,
+  "remote_ci": false,
+  "publish": false,
+  "checks": [
+    {
+      "command": [
+        "moon",
+        "info",
+        "--target",
+        "native"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.6685,
+      "log": "_build/local-020/final-delivery/00-moon-info.log",
+      "output_tail": [
+        "Finished. moon: ran 3 tasks, now up to date"
+      ]
+    },
+    {
+      "command": [
+        "moon",
+        "fmt"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 41.2191,
+      "log": "_build/local-020/final-delivery/01-moon-fmt.log",
+      "output_tail": [
+        "Finished. moon: ran 62 tasks, now up to date"
+      ]
+    },
+    {
+      "command": [
+        "moon",
+        "fmt",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.9512,
+      "log": "_build/local-020/final-delivery/02-moon-fmt.log",
+      "output_tail": [
+        "Finished. moon: ran 62 tasks, now up to date"
+      ]
+    },
+    {
+      "command": [
+        "moon",
+        "check",
+        "--target",
+        "native",
+        "--deny-warn",
+        "--warn-list",
+        "+73"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.0002,
+      "log": "_build/local-020/final-delivery/03-moon-check.log",
+      "output_tail": [
+        "Finished. moon: ran 40 tasks, now up to date"
+      ]
+    },
+    {
+      "command": [
+        "moon",
+        "build",
+        "--target",
+        "native",
+        "--deny-warn"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.6396,
+      "log": "_build/local-020/final-delivery/04-moon-build.log",
+      "output_tail": [
+        "   Creating library E:\\moonbit\\MoonSRC\\_build\\native\\debug\\build\\examples\\quality_tradeoff\\quality_tradeoff.lib and object E:\\moonbit\\MoonSRC\\_build\\native\\debug\\build\\examples\\quality_tradeoff\\quality_tradeoff.exp",
+        "quality.c",
+        "   Creating library E:\\moonbit\\MoonSRC\\_build\\native\\debug\\build\\tools\\quality\\quality.lib and object E:\\moonbit\\MoonSRC\\_build\\native\\debug\\build\\tools\\quality\\quality.exp",
+        "Finished. moon: ran 51 tasks, now up to date"
+      ]
+    },
+    {
+      "command": [
+        "moon",
+        "test",
+        "--target",
+        "native",
+        "--deny-warn"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 6.5654,
+      "log": "_build/local-020/final-delivery/05-moon-test.log",
+      "tests": {
+        "total": 195,
+        "passed": 195,
+        "failed": 0
+      },
+      "output_tail": [
+        "wav_convert.blackbox_test.c",
+        "wav.blackbox_test.c",
+        "main.blackbox_test.c",
+        "MoonSRC.blackbox_test.c"
+      ]
+    },
+    {
+      "command": [
+        "moon",
+        "check",
+        "--target",
+        "js",
+        "--deny-warn",
+        "--warn-list",
+        "+73"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.7551,
+      "log": "_build/local-020/final-delivery/06-moon-check.log",
+      "output_tail": [
+        "Finished. moon: ran 5 tasks, now up to date"
+      ]
+    },
+    {
+      "command": [
+        "moon",
+        "build",
+        "--target",
+        "js",
+        "--deny-warn"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.1476,
+      "log": "_build/local-020/final-delivery/07-moon-build.log",
+      "output_tail": [
+        "Finished. moon: ran 19 tasks, now up to date"
+      ]
+    },
+    {
+      "command": [
+        "moon",
+        "test",
+        "--target",
+        "js",
+        "--deny-warn"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 5.0713,
+      "log": "_build/local-020/final-delivery/08-moon-test.log",
+      "tests": {
+        "total": 195,
+        "passed": 195,
+        "failed": 0
+      },
+      "output_tail": [
+        "Total tests: 195, passed: 195, failed: 0."
+      ]
+    },
+    {
+      "command": [
+        "moon",
+        "check",
+        "--target",
+        "wasm-gc",
+        "--deny-warn",
+        "--warn-list",
+        "+73"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.7204,
+      "log": "_build/local-020/final-delivery/09-moon-check.log",
+      "output_tail": [
+        "Finished. moon: ran 5 tasks, now up to date"
+      ]
+    },
+    {
+      "command": [
+        "moon",
+        "build",
+        "--target",
+        "wasm-gc",
+        "--deny-warn"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.2556,
+      "log": "_build/local-020/final-delivery/10-moon-build.log",
+      "output_tail": [
+        "Finished. moon: ran 19 tasks, now up to date"
+      ]
+    },
+    {
+      "command": [
+        "moon",
+        "test",
+        "--target",
+        "wasm-gc",
+        "--deny-warn"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.518,
+      "log": "_build/local-020/final-delivery/11-moon-test.log",
+      "tests": {
+        "total": 195,
+        "passed": 195,
+        "failed": 0
+      },
+      "output_tail": [
+        "Total tests: 195, passed: 195, failed: 0."
+      ]
+    },
+    {
+      "command": [
+        "D:\\anaconda3\\python.exe",
+        "scripts/e2e.py",
+        "--report",
+        "docs/evidence/0.2.0/e2e.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.8236,
+      "log": "_build/local-020/final-delivery/12-python-e2e.py.log",
+      "output_tail": [
+        "    \"empty_eight_channel_float_conversion\"",
+        "  ]",
+        "}",
+        "Finished. moon: no work to do"
+      ]
+    },
+    {
+      "command": [
+        "D:\\anaconda3\\python.exe",
+        "scripts/run_examples.py",
+        "--report",
+        "docs/evidence/0.2.0/examples.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.8296,
+      "log": "_build/local-020/final-delivery/13-python-run_examples.py.log",
+      "output_tail": [
+        "    }",
+        "  ]",
+        "}",
+        "Finished. moon: no work to do"
+      ]
+    },
+    {
+      "command": [
+        "D:\\anaconda3\\python.exe",
+        "scripts/quality.py",
+        "--report",
+        "docs/evidence/0.2.0/quality.json",
+        "--keep-raw",
+        "_build/quality-020-final"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 23.7842,
+      "log": "_build/local-020/final-delivery/14-python-quality.py.log",
+      "output_tail": [
+        "  \"invariants\": 27,",
+        "  \"legacy_balanced_bitwise_equal\": true",
+        "}",
+        "Finished. moon: no work to do"
+      ]
+    },
+    {
+      "command": [
+        "moon",
+        "run",
+        "--target",
+        "native",
+        "cmd/main",
+        "--",
+        "--version"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.7037,
+      "log": "_build/local-020/final-delivery/15-moon-run.log",
+      "output_tail": [
+        "0.2.0"
+      ]
+    },
+    {
+      "command": [
+        "moon",
+        "run",
+        "--target",
+        "native",
+        "cmd/main",
+        "--",
+        "--help"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.292,
+      "log": "_build/local-020/final-delivery/16-moon-run.log",
+      "output_tail": [
+        "Supports PCM16LE/IEEE float32 WAV, 1..8 channels, fixed 8000..192000 Hz within phase/table budgets.",
+        "convert options: --quality low|balanced|high (default balanced), --format pcm16|float32 (default pcm16).",
+        "fixture options: --channels 1..8 --frames N --format pcm16|float32.",
+        "Output paths must be new. Exit 0=success, 2=invalid input or I/O failure."
+      ]
+    },
+    {
+      "command": [
+        "moon",
+        "doc"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.8884,
+      "log": "_build/local-020/final-delivery/17-moon-doc.log",
+      "output_tail": [
+        "Finished. moon: ran 20 tasks, now up to date"
+      ]
+    },
+    {
+      "command": [
+        "D:\\anaconda3\\python.exe",
+        "scripts/consumer.py",
+        "--report",
+        "docs/evidence/0.2.0/consumer_local.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 11.5685,
+      "log": "_build/local-020/final-delivery/18-python-consumer.py.log",
+      "output_tail": [
+        "  ],",
+        "  \"private_files_excluded\": true,",
+        "  \"root_workspace_unchanged\": true",
+        "}"
+      ]
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.1308,
+      "log": "_build/local-020/final-delivery/19-git-diff.log",
+      "output_tail": [
+        "warning: in the working copy of 'docs/evidence/0.2.0/e2e.json', CRLF will be replaced by LF the next time Git touches it",
+        "warning: in the working copy of 'docs/evidence/0.2.0/examples.json', CRLF will be replaced by LF the next time Git touches it",
+        "warning: in the working copy of 'docs/evidence/0.2.0/quality.json', CRLF will be replaced by LF the next time Git touches it"
+      ]
+    },
+    {
+      "command": [
+        "internal",
+        "artifact-and-document-check"
+      ],
+      "exit_code": 0,
+      "checked": [
+        "same README copies",
+        "no leaked moon.work",
+        "0.2.0 module version",
+        "private proposal ignored and untracked",
+        "195/195 tests per target",
+        "local Markdown artifact links"
+      ]
+    },
+    {
+      "command": [
+        "moon",
+        "info",
+        "--target",
+        "native"
+      ],
+      "exit_code": 0,
+      "phase": "final artifact review",
+      "output_tail": [
+        "Finished. moon: no work to do"
+      ]
+    },
+    {
+      "command": [
+        "moon",
+        "fmt"
+      ],
+      "exit_code": 0,
+      "phase": "final artifact review",
+      "output_tail": [
+        "Finished. moon: ran 62 tasks, now up to date"
+      ]
+    },
+    {
+      "command": [
+        "moon",
+        "fmt",
+        "--check"
+      ],
+      "exit_code": 0,
+      "phase": "final artifact review",
+      "output_tail": [
+        "Finished. moon: ran 62 tasks, now up to date"
+      ]
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "phase": "final artifact review",
+      "output_tail": [
+        "warning: in the working copy of 'docs/evidence/0.2.0/e2e.json', CRLF will be replaced by LF the next time Git touches it",
+        "warning: in the working copy of 'docs/evidence/0.2.0/examples.json', CRLF will be replaced by LF the next time Git touches it",
+        "warning: in the working copy of 'docs/evidence/0.2.0/quality.json', CRLF will be replaced by LF the next time Git touches it"
+      ]
+    },
+    {
+      "command": [
+        "internal",
+        "API and private artifact review"
+      ],
+      "exit_code": 0,
+      "original_public_functions_preserved": true,
+      "original_wav_error_enum_unchanged": true,
+      "unexpected_mbti_changes": false,
+      "proposal_unchanged": true,
+      "python_validators_compile": true
+    },
+    {
+      "command": [
+        "moon",
+        "package"
+      ],
+      "exit_code": 0,
+      "phase": "final local artifact",
+      "archive": "_build/publish/Ag108-MoonSRC-0.2.0.zip",
+      "private_files_excluded": true
+    }
+  ],
+  "retained_measurements": {
+    "bounded_stream.json": "183 actual trials, mono/stereo paths unchanged after measurement",
+    "bounded_stream_optimized.json": "162 actual current multichannel matrix trials",
+    "performance_change.json": "24 before/after eight-channel cases, three trials each",
+    "reference_compare.json": "60 actual aligned black-box comparisons; unchanged mono/stereo DSP"
+  },
+  "deferred": [
+    "GitHub push",
+    "0.2.0 remote CI",
+    "Mooncakes 0.2.0 publication and registry install"
+  ]
+}

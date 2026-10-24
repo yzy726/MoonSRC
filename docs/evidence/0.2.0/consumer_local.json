@@ -30,7 +30,7 @@
       ]
     }
   ],
-  "dependency_tree": "local/moonsrc_consumer@0.1.0 (local E:\\moonbit\\MoonSRC\\_build\\moonsrc-consumer-_8uvz5yx\\consumer) [workspace member]:\n\u2514\u2500 Ag108/MoonSRC -> Ag108/MoonSRC@0.2.0 (local E:\\moonbit\\MoonSRC\\_build\\moonsrc-consumer-_8uvz5yx\\library) [workspace member]",
+  "dependency_tree": "local/moonsrc_consumer@0.1.0 (local E:\\moonbit\\MoonSRC\\_build\\moonsrc-consumer-wzdq6k9c\\consumer) [workspace member]:\n\u2514\u2500 Ag108/MoonSRC -> Ag108/MoonSRC@0.2.0 (local E:\\moonbit\\MoonSRC\\_build\\moonsrc-consumer-wzdq6k9c\\library) [workspace member]",
   "private_files_excluded": true,
   "archive_source_hashes": {
     "api.mbt": "031fc1b49bdf36b9b95a3259db3eb27382f169149516d341d58147ddc7c5d617",

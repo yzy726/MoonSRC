@@ -58,7 +58,7 @@ def main():
         if not registry:
             library=work/"library";library.mkdir();members.insert(0,'./library')
             with zipfile.ZipFile(archive) as bundle:
-                private={".git",".agent-workplace","_build",".mooncakes","AGENTS.md","goal.md","项目申报书.md"}
+                private={".git",".agent-workplace","_build",".mooncakes","AGENTS.md","goal.md","项目申报书.md","FINAL_LOCAL_ACCEPTANCE.md","LOCAL_ACCEPTANCE.md"}
                 for member in bundle.infolist():
                     name=member.filename.replace("\\","/")
                     assert not any(part in private for part in name.split("/")),name

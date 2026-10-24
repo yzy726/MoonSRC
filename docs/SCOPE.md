@@ -1,39 +1,50 @@
-# Supported scope and resource budgets
+# Supported formats and resource limits — 0.2.0
 
-The 0.1.0 core accepts only 16000, 44100 and 48000 Hz, with identity or pairs that
-include 48000; exactly one/two interleaved channels. It rejects 44100<->16000.
-General 8..192 kHz ratios, 3..8 channels, dynamic drift correction, float32 WAV,
-multiple quality presets and external-library comparisons remain final-stage
-work, not initial features.
+The product converts fixed-rate PCM. It does not include codecs, audio devices,
+dynamic ratios, channel mixing, speaker remapping or a zero-allocation/hard-real-
+time guarantee. Core targets native/js/wasm-gc; file CLI and probes are native.
+Local OS evidence is Windows 11, not inferred Linux/macOS runtime support.
 
-All core samples must be finite Double; values beyond [-1,1] are not clipped.
-The FIR may produce a value outside the PCM16 range. NumericOverflow is explicit
-when finite-input arithmetic cannot be represented. WAV/PCM quantization is a
-separate layer, with clamp to [-1,32767/32768], scale by 32768 and ties away from
-zero. clipped_samples counts input values changed by this saturation, including
-+1.0. Decoding maps signed PCM16 values to value/32768.
+## Core
 
-| Budget | Bound |
-|---|---:|
-| Filter radius / taps | 96 / 193 |
-| Exact phases | <=160 |
-| Ring capacity | 200 frames * channels |
-| Core sample payload | <=31280 Double slots / 250240 bytes |
-| Stream accepted input | <=Int64.max-193 frames, also checked output count |
-| One-shot output and PCM buffers | <=16777216 samples |
-| Native WAV input file | <=33554476 bytes, checked before allocation |
-| WAV byte adapter rate | integer 1..192000 Hz, but resampling still obeys the core matrix |
+- Integer rates 8000..192000, interleaved channels 1..8.
+- p=Fout/gcd(Fin,Fout)<=4096; coefficient slots p*(2R+1)<=1,048,576. ResourceLimit
+  rejects excessive precision/table size before construction.
+- R depends on quality/downsampling, maximum 1536. Ring slots (2R+8)*channels
+  <=24,640 Doubles; live history <=2R+1 frames. Headers/caller arrays are separate.
+- Both batch facades limit output to 16,777,216 samples (128 MiB binary64 payload).
+  They also allocate a stream and scratch buffer; long streams use bounded blocks.
+- Stream counts use checked Int64 with 2R+1 window reserve. Finite Double input
+  is not clipped; nonfinite input and arithmetic overflow are explicit errors.
 
-The byte-only WAV package accepts RIFF/WAVE, PCM format tag 1, 16-bit little
-endian, one/two channels and consistent block/byte-rate metadata. Unknown chunks
-with correct padding and data-before-fmt are supported. Compressed/extensible/
-float/RF64 formats, duplicate fmt/data, trailing bytes, truncated lengths and
-partial frames are rejected. A WAV field accepting a rate does not expand the
-core's supported conversion pairs.
+## WAV and PCM
 
-The native CLI uses the whole-buffer facade and refuses existing output paths.
-It does not encode MP3/Opus/FLAC, change pitch independently, normalize volume,
-mix channels, upload audio or provide an audio-device API. Failed disk writes
-return failure and may leave a newly created partial output; existing files are
-never opened for replacement. The library stream has bounded payload; the CLI
-and facade intentionally have larger bounded whole-file allocations.
+Little-endian RIFF/WAVE supports PCM16 (tag 1), IEEE binary32 (tag 3), and
+WAVEFORMATEXTENSIBLE (tag 65534) with corresponding PCM/float GUID, 1..8 channels.
+Metadata rates are 1..192000 Hz; core conversion still requires >=8000.
+Extensible valid bits must equal container bits, and nonzero speaker masks must
+have exactly channels set bits. Audio preserves ordinal samples, not speaker
+metadata; output multichannel headers use unspecified mask 0.
+
+Unknown chunks, required odd-byte padding and data-before-fmt are accepted.
+Truncation, inconsistent RIFF/length/rate/alignment, duplicate fmt/data, missing
+chunks, unsupported depth/GUID and nonfinite float values are classified errors.
+Float output emits fact; decode derives frames from validated data length rather
+than trusting fact. No compressed formats or RF64 are supported.
+
+Total file limit is 33,554,476 bytes before sample allocation. Canonical header
+overheads are 44 (mono/stereo PCM16), 58 (mono/stereo float32), 68 (multichannel
+PCM16), 80 (multichannel float32) bytes. Float32 therefore has a lower sample
+capacity at the same byte limit. Whole-file adapters materialize arrays, so this
+limit does not imply constant CLI memory.
+
+PCM16 decode is signed_integer/32768. Encode scales by 32768, rounds ties away
+from zero, saturates to [-32768,32767] and counts saturation. Float32 rounds to
+binary32 without clipping to [-1,1], reporting zero clipped samples. Nonfinite
+input or finite Double rounding to float Infinity returns NonFinite(index),
+keeping old WavError variants.
+
+Native read checks file type/size and growth/truncation, with Unicode paths.
+Output is created exclusively. CLI defaults remain Balanced and PCM16;
+--quality low|balanced|high and --format pcm16|float32 select alternatives.
+See [STREAMING](STREAMING.md), [SECURITY](SECURITY.md) and [FINAL_SCOPE](FINAL_SCOPE.md).

@@ -1,49 +1,50 @@
-# Algorithm and time contract
+# Algorithm and time contract — 0.2.0
 
-The core is independently implemented in MoonBit. C is confined to native file
-I/O and timing/RSS probes; Python verifies outputs and never supplies the product
-conversion algorithm. Internal packages are implementation details.
+The algorithm is independently implemented in MoonBit. C implements file I/O
+(internal/nativeio) and clock/RSS (internal/probe) only. Python verifies output;
+it does not perform product conversion. Identity copies exactly with no FIR.
 
-For N input frames, frame n is at n/Fin. Output m is at m/Fout while
-m/Fout < N/Fin, so final length is ceil(N*Fout/Fin). Config::output_frames uses
-quotient/remainder decomposition, checking the final Int64 addition/product
-without overflowing an intermediate N*Fout. Empty input produces no output.
+For N input frames, input n occurs at n/Fin. Output m occurs at m/Fout while
+m/Fout<N/Fin, so final length is ceil(N*Fout/Fin). Checked quotient/remainder
+arithmetic avoids intermediate N*Fout overflow. Reduce Fout/Fin to p/q; for each
+output s=phase+q, position+=floor(s/p), phase=s mod p. Only convolution uses
+floating point; the sample clock uses integers.
 
-Reduce Fout/Fin to p/q. The next timestamp is position + phase/p in input frames.
-For every emitted frame, s = phase + q, position += floor(s/p), phase = s mod p.
-Only the filter evaluation uses floating point; the sample clock never does.
-Identity uses exact copying and skips FIR allocation/latency.
+| Quality | Base radius B, input frames | Rolloff a |
+|---|---:|---:|
+| LowLatency | 32 | .90 |
+| Balanced | 96 | .94 |
+| HighQuality | 192 | .97 |
 
-For j = -96..96 and phase r, put x = j-r/p, cutoff = 0.94*min(1,Fout/Fin).
-The unnormalized coefficient is
+R=B*max(1,ceil(Fin/(3*Fout))), cutoff=a*min(1,Fout/Fin). For j=-R..R and phase r,
+x=j-r/p; the unnormalized coefficient is:
 
-    cutoff * sin(pi*cutoff*x)/(pi*cutoff*x)
-           * (0.42 + 0.5*cos(pi*x/96) + 0.08*cos(2*pi*x/96))
+```text
+cutoff * sinc(cutoff*x) * (0.42 + 0.5*cos(pi*x/R) + 0.08*cos(2*pi*x/R))
+sinc(t)=sin(pi*t)/(pi*t), sinc(0)=1
+```
 
-for |x|<96, and zero otherwise. At x=0 the sinc limit is 1. Each phase is
-normalized by its own coefficient sum. Output channel c is the sum of these
-coefficients times input[position+j,c]. There is no channel mixing.
+It is zero for |x|>=R. Each phase is divided by its coefficient sum. Output
+channel c sums only input channel c. The table uses exact phases without phase
+interpolation or hot-path coefficient construction. The >2-channel loop reuses
+history indexing across channels but preserves each channel's tap order;
+mono/stereo retain the original loop.
 
-The exact table has p phases, at most 160, each with 193 coefficients. There is no
-phase interpolation and no coefficient computation in process/finish. With the
-initial supported rates the table is finite and its largest payload is 30,880
-Doubles. The state owns a 200-frame interleaved ring; at most 193 frames are live.
-The maximum fixed sample payload is (30880+400)*8 = 250240 bytes for stereo
-44100->48000. Object/array headers and caller buffers are separate.
+Creation rejects p>4096 or p*(2R+1)>1,048,576 before allocating the table. Ring
+capacity is (2R+8)*channels; live history <=2R+1 frames. Across the domain R<=1536,
+so conservative payload caps are 8 MiB coefficients plus 24,640 ring Doubles.
+Headers, caller buffers and runtime allocation are separate. Identity has no FIR.
 
-The centered FIR waits for 96 future input frames. Input before zero and after
-end-of-stream is zero. finish does not append a convolution tail: it emits only
-valid output timestamps. Finite DC/tones can have expected onset/ending
-transients. Lookahead is buffering delay, not a shift of the output time axis.
+The centered FIR waits R future input frames. Both boundaries use zero extension.
+finish emits only valid timestamps, without an appended convolution tail.
+Lookahead is buffering delay, not an output-time shift: R input frames,
+ceil(R*Fout/Fin) output frames and R/Fin seconds. Boundary ringing is expected.
 
-No core clipping or normalization of audio level occurs. All finite input
-amplitudes are allowed; an unrepresentable arithmetic result returns
-NumericOverflow, faults the instance, and requires reset. Invalid frames and
-nonfinite input are rejected before state mutation. A total stream input limit
-of Int64.max-193 reserves safe signed arithmetic for the FIR window; output frame
-arithmetic is also checked before accepting each input view.
+Input count is limited to Int64.max-(2R+1); output arithmetic is checked before
+acceptance. Normal invalid input is atomic. Finite input can overflow arithmetic;
+NumericOverflow faults the stream and requires reset. Core levels are not clipped.
 
-The independent direct sinc reference in scripts/e2e.py compares the native CLI
-with an independently evaluated convolution, within one PCM16 least significant
-bit. Phase normalization/symmetry/first moment and measured signal response have
-separate tests. These checks complement the fixed quality experiment in QUALITY.
+Balanced remains bitwise unchanged on original supported scenarios; original raw
+quality output is retained. Severe new ratios intentionally use larger support.
+Direct convolution, per-channel mono equivalence, integer-clock and filter tests
+complement [signal evidence](QUALITY.md).
