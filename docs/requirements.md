@@ -1,65 +1,35 @@
-# MoonSRC 0.1.0 requirements
+# MoonSRC 0.2.0 requirements and decisions
 
-The user requested implementation of the initial acceptance goals in goal.md on
-2026-10-17, with a local Git commit after each completed step, authored and
-committed as yzy726. The user explicitly selected local acceptance only:
-no Git push and no Mooncakes publication. Publication and registry installation
-are consequently deferred, and must not be claimed as completed.
+On 2026-10-18 the user authorized final goals from goal.md with version 0.2.0.
+The initial architecture continues: pure MoonBit library, native WAV CLI as thin
+adapter. Consumers are MoonBit audio/voice applications; no external production
+deployment or listening-panel acceptance is claimed.
 
-## Design baseline
+| Decision | Final requirement |
+|---|---|
+| Metadata | Ag108/MoonSRC; github.com/yzy726/MoonSRC; Apache-2.0 |
+| Core | MoonBit fixed-rate PCM stream; native/js/wasm-gc actually run |
+| PCM | Finite Double, interleaved 1..8 channels, no implicit clipping |
+| Rates/budgets | 8000..192000 Hz; <=4096 exact phases and <=1,048,576 coefficient Doubles, reject before allocation |
+| Presets | LowLatency/Balanced/HighQuality, base radii 32/96/192, rolloffs .90/.94/.97, downsampling-scaled support |
+| Time | Integer clock, ceil(N*Fout/Fin), zero extension, lookahead without extra output delay/tail |
+| State | Partial consumption, caller output, finish/reset, progress/latency/stats, atomic normal errors |
+| Batch | Same stream engine, resample and resample_into; <=16,777,216 output samples |
+| WAV | PCM16/IEEE float32/extensible, ordinal channels, explicit quantization; <=33,554,476 bytes |
+| API | Original signatures/records/error enums retained; document newly accepted inputs and variable latency |
 
-- Primary product: pure MoonBit library; native WAV CLI is a thin adapter (plan A).
-- Consumers: MoonBit audio/voice applications; initial synthetic PCM and WAV
-  consumers are included. No external production consumer has been identified.
-- Keep the existing module name Ag108/MoonSRC and Apache-2.0 license.
-- Intended library targets: native, JavaScript, wasm-gc; claim only tested targets.
-- Support 44100 <-> 48000, 48000 <-> 16000, and identity at 16000/44100/48000 Hz;
-  one or two interleaved channels; finite Double samples, without core clipping.
-- Output timestamps m/Fout < N/Fin; total frames = ceil(N*Fout/Fin).
-- Zero extension at both boundaries. The centered FIR uses future input;
-  latency is lookahead, not additional output frames. Identity is exact passthrough.
-- Blackman-windowed sinc; radius 96 input frames; cutoff 0.94*min(1,Fout/Fin).
-  Exact rational phase table, maximum 160 phases and 193 taps per phase.
-- Integer sample clock, bounded history, caller-owned output. All progress uses
-  complete frames. Zero output capacity makes no progress and consumes no input.
-- Nonfinite or misaligned input errors are atomic (validate before state mutation).
-- finish drains ceil(N*Fout/Fin), is repeatable and eventually idempotent;
-  process after finish starts is an error; reset explicitly starts a fresh stream.
-- Resource counters use Int64, checked before arithmetic. Finite samples whose
-  filtering result cannot be represented return an explicit numeric error.
-- The root separates model/clock/stream/facade by file; internal/filter, pcm and wav
-  are independent packages. WAV handles bytes only; native CLI owns file I/O.
-  Dependencies flow model -> clock/filter -> stream -> facade -> CLI/examples.
-  Keep implementation helpers private to avoid exporting incidental internals.
+[FINAL_SCOPE](FINAL_SCOPE.md) freezes F1..F11, including >=150 scenarios, >=30
+invalid/state cases, >=10 E2E flows, nine examples, fixed three-preset quality
+gates, real 1/10-minute storage measurements, CPU matrix and source-identified
+external reference. Methods/thresholds are in [QUALITY](QUALITY.md). New behavior
+was implemented from failing tests; limits were not relaxed to hide failures.
 
-## Public API baseline
+Initial 0.1.0 restricted common ratios, mono/stereo and PCM16 with one Balanced
+filter. It was published by the maintainer and remains a regression baseline.
+The current local archive tests new APIs; a separate registry install tests old
+compatibility. See [MIGRATION](MIGRATION.md).
 
-- Config::new(input_rate, output_rate, channels) -> Result[Config, ResampleError]
-- Config::output_frames(Int64) -> Result[Int64, ResampleError]
-- Resampler::new(Config) -> Resampler
-- Resampler::process(ArrayView[Double], FixedArray[Double]) -> Result[Progress, ResampleError]
-- Resampler::finish(FixedArray[Double]) -> Result[Progress, ResampleError]
-- Resampler::reset(), latency(), stats(), is_finished()
-- resample(Config, ArrayView[Double]) -> Result[Array[Double], ResampleError]
-- pcm: explicit PCM16 quantization/dequantization.
-- wav: decode/encode PCM16 RIFF/WAVE with classified errors and size limits.
-
-## Acceptance and maintenance
-
-At least 60 deterministic scenarios, 15 error/state scenarios, 5 end-to-end flows
-and 5 runnable examples. Test signal definitions and analysis windows are fixed
-before quality measurements: 48000 input frames, amplitude 0.5, trim 256 output
-frames at each end; coherent projection at 1 kHz and aliased 4 kHz; <=0.5 dB
-passband error and <=-50 dB alias relative to the 1 kHz output. Independent Python
-analysis verifies actual MoonBit output. Compare internal storage at 1 and 10
-minutes with the same configuration. Document actual timing and allocations.
-
-New behavior uses failing tests first. Use blackbox public behavior tests and
-whitebox tests only for phase/filter invariants. Deterministic seeds, no private
-recordings. Each step passes fmt/check/test and interface review before commit.
-Maintain versioned generated interfaces, automated quality checks and sources.
-0.1.0 is an initial API baseline; future incompatible changes need release notes.
-
-## Final acceptance 0.2.0 authorization
-
-On 2026-10-18 the user requested completion of the final goals with version 0.2.0. docs/FINAL_SCOPE.md defines the supported matrix, additive APIs and fixed acceptance thresholds. The architecture and target backends continue the existing design approved through goal.md. Each task is committed locally as yzy726. The user explicitly excluded GitHub push and remote CI for this run; Mooncakes publication is deferred.
+Scoped commits use yzy726 without changing global Git identity. GitHub CI
+validates the source before the maintainer publishes 0.2.0 to Mooncakes. Local
+acceptance notes remain ignored; public evidence and reproduction commands are
+linked from [TESTING](TESTING.md).

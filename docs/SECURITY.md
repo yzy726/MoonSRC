@@ -1,30 +1,29 @@
-# Input and resource review
+# Input and resource review — 0.2.0
 
-Data flow is untrusted PCM/config -> validated Config -> FIR/ring -> caller output;
-or WAV file -> bounded native read -> checked RIFF parser -> PCM -> same library
--> explicit quantizer -> exclusive new output file. There is no network or
-credential processing in runtime code. Source dependencies are MoonBit core and
-system C runtime only; no third-party Mooncakes module remains.
+Runtime flow is validated PCM/config -> FIR/ring -> caller output; or bounded
+WAV read -> checked RIFF parser -> same library -> explicit encoder -> new file.
+Runtime code has no networking or credentials. Dependencies are toolchain core
+and system APIs; optional reference download is development-only, hash-pinned.
 
-| Boundary / concern | Mitigation and evidence |
+| Boundary | Mitigation/evidence |
 |---|---|
-| Spoofed WAV metadata or chunk lengths | Int64 u32 decoding, containing-bound checks before conversion/allocation, alignment/byte-rate checks; WAV error tests |
-| State tampering or channel mixing | Private Config/Resampler fields, distinct per-channel indexing, stereo isolation and reset tests |
-| Denial via extreme sizes/configuration | Initial rate/channel allowlist, bounded phases/ring, checked frame arithmetic, facade and WAV budgets |
-| File replacement | Exclusive create (wbx), including existing paths; end-to-end preservation test |
-| Private data exposure | Synthetic fixtures only, metadata-only CLI output, no audio upload/logging |
-| Resource/ownership failure | Borrowed path/content FFI arguments; owned returned Bytes; file descriptors and temporary wide paths closed/freed on all read branches |
+| Extreme rate/precision/channel count | Bounds and exact phase/coefficient budgets before allocation; co-prime/endpoint tests |
+| Count and allocation arithmetic | Checked Int64 counts/window reserve; batch/file budgets; overflow regression |
+| NaN/Infinity/float overflow | Atomic normal input checks, numeric fault/reset, binary32 validation before encode allocation |
+| WAV/extensible metadata | Containing bounds, exact rate/alignment, GUID/valid bits/mask validation; malformed independent fixtures |
+| Channel leakage/state misuse | Private fields; channel-vs-mono, tiny/random blocks, finish/reset tests |
+| Existing files/path handling | Exclusive creation and preservation tests, Unicode paths |
+| Native ownership | Borrowed FFI arguments, owned Bytes, file/path cleanup; only file I/O and clock/RSS in C |
+| Private content | Synthetic signals; no audio upload/content logging; ignored private proposal |
 
-Only the native boundary uses C, with MoonBit's #borrow and explicit ownership.
-The reader checks regular-file status and 64-bit size before allocating sample
-bytes, rejects growth/truncation during reading, and uses UTF-8 paths converted
-to UTF-16 on Windows. The DSP has no unsafe code or FFI. Tests include oversized
-files, directories, malformed lengths, Unicode paths, NaN/Infinity and state
-misuse. Normal malformed input must not panic or silently succeed.
+The native reader checks regular-file status and 64-bit size before allocation,
+rejects growth/truncation and uses UTF-16 paths on Windows. Core DSP has no unsafe
+code/FFI. Fixed table/ring payload does not bound process RSS, runtime allocations
+or CPU cost. Whole-file adapters can materialize multiple buffers. Applications
+must budget expensive configurations; input/output aliasing is unsupported.
 
-A manual boundary/source/dependency review was performed. moon-audit is not
-installed, so automated vulnerability/static-audit coverage is not claimed.
-No dependency CVE scan result is fabricated. Native portability beyond this
-Windows host is prepared in CI, and is not described as a locally tested OS.
-For security reports, include a minimal synthetic reproducer and the exact
-backend/toolchain; avoid attaching private recordings.
+Manual source/dependency/boundary review found no new third-party runtime module.
+moon-audit is unavailable here; automated vulnerability scanning or independent
+security certification is not claimed. Backend tests do not establish cross-OS
+runtime results. Report minimal synthetic reproducers with backend/toolchain;
+avoid private recordings. Precise budgets are in [SCOPE](SCOPE.md).

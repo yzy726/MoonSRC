@@ -1,51 +1,45 @@
-# Streaming API
+# Streaming and batch contract — 0.2.0
 
-Config::new validates the initial rate matrix and one/two channels. Its fields
-and every mutable Resampler field are private. Create one Resampler per unrelated
-PCM stream. Double input is interleaved by frame; all public counters use frames.
-Buffers must contain a whole number of frames. The caller owns both buffers.
+Config fixes rates, channels and quality. Config::new defaults to Balanced;
+Config::with_quality selects LowLatency/Balanced/HighQuality. Integer rates are
+8000..192000, interleaved channels 1..8. Exact-table budgets can reject an in-range
+pair with ResourceLimit before allocation; no silent ratio/quality replacement.
 
-A correct consumer loop is:
+process accepts ArrayView[Double] and caller-owned FixedArray[Double]. Both
+lengths must align to channels. Progress counts complete frames: advance input
+by consumed_frames*channels and read only produced_frames*channels output values.
+Retain unconsumed input for retry. Input/output must not alias; one stream is
+used serially. Alignment/nonfinite checks precede consumption and output writes.
 
-1. Offer a bounded input view and a FixedArray[Double] output buffer.
-2. Read exactly produced_frames*channels output samples.
-3. Advance the input by consumed_frames*channels, retrying the unconsumed suffix.
-4. Continue even if only output was produced or only input was consumed.
-5. After all input was actually consumed, call finish repeatedly until finished.
+Zero output space consumes no input and produces nothing. With output space,
+empty input can drain available output. needs_input/needs_output are conservative
+hints and can both be true. Use counts and is_finished to control loops; provide
+output space for progress. Small input offers avoid rescanning huge unconsumed
+views on backpressure retries.
 
-process validates the complete offered view before mutation, including samples
-it might not consume this call. InvalidState, MisalignedInput/MisalignedOutput,
-NonFinite and preflight FrameOverflow do not consume input. Input/output memory
-must not alias. The caller must retain the unconsumed input and must not mutate
-an input view during a call. The instance is single-stream and not synchronized
-for concurrent calls.
+States: Active -> Finishing -> Finished. The first valid finish starts Finishing
+even with no output space. process is rejected thereafter, including empty input.
+Repeated finish drains remaining frames and becomes idempotent. Misaligned
+finish does not change state. Empty streams finish immediately. reset clears
+history/counters, returns Active and reuses arrays with the same configuration.
 
-A zero-capacity output buffer consumes/produces nothing. An empty input view can
-drain output whose lookahead is already available. The needs_input/needs_output
-flags are conservative readiness hints and can both be true; use the counts and
-is_finished for loop control. Never repeatedly call with zero output capacity
-expecting forward progress. Small bounded offers also avoid rescanning a large
-unconsumed view on every backpressure retry.
+NumericOverflow may follow partial processing/output writes. It faults the
+stream; later process/finish returns InvalidState. Discard that conversion and
+reset for a new one. Other normal invalid data is rejected atomically. Checked
+FrameOverflow prevents unsafe count/window arithmetic before consumption.
 
-State transitions are Active -> Finishing -> Finished. The first valid finish
-starts Finishing even with zero output capacity. process is rejected thereafter,
-including empty input. Repeated finish drains pending frames and becomes
-idempotent. Misaligned finish output does not start finishing. Empty streams
-finish immediately. reset discards previous history/counters, returns to Active
-and reuses allocations.
+latency reports R input frames, ceil(R*Fout/Fin) output frames and R/Fin seconds,
+with quality/rate-dependent R from [ALGORITHM](ALGORITHM.md); identity is zero.
+stats reports accepted/emitted frames, live/peak history and fixed coefficient/
+ring Double slots. Final length is ceil(N*Fout/Fin), zero-extended at both ends.
 
-NumericOverflow can occur after partial processing and output writes; the stream
-then faults, both process and finish return InvalidState, and the caller must
-discard that failed conversion and reset before starting a new stream. Other
-normal invalid data is validated atomically before consuming it.
+resample returns an Array through the same engine. resample_into writes caller
+storage and returns output frames, leaving its unused tail intact. Alignment,
+finite input, output capacity and the 16,777,216-output-sample budget are checked
+before writes. Insufficient capacity returns ResourceLimit. NumericOverflow can
+leave partial output, which must be discarded. Both facades allocate a stream
+and small scratch buffer; caller storage does not imply zero allocation. Use
+bounded process/finish blocks for long audio.
 
-latency reports 96 input frames and ceil(96*Fout/Fin) output frames, except identity
-which reports zero. It also reports seconds. stats reports accepted input,
-emitted output, current/peak live history and fixed coefficient/ring Double slots.
-No output is prefixed to compensate latency; final frames follow the timestamp
-formula in ALGORITHM. Zero extension explains boundary ringing on short files.
-
-resample is a convenience consumer of exactly this process/finish implementation,
-with a 16,777,216 output-sample payload cap. Its input/output arrays can be large;
-use the streaming interface for long audio. Examples and scripts/consumer.py
-contain executable loops with backpressure and final flushing.
+See [chunked example](../examples/chunked_equivalence/main.mbt), [isolated
+consumer](../scripts/consumer.py) and [migration](MIGRATION.md).

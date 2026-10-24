@@ -35,7 +35,7 @@
     },
     {
       "example": "quality_tradeoff",
-      "stdout": "quality=low frames_out=16000 passband_db=0.000009002226537875716 alias_db=-91.7850466593708 lookahead=32 coefficient_samples=65 elapsed_seconds=0.008843699999488308\nquality=balanced frames_out=16000 passband_db=0.0000011649828694479895 alias_db=-110.6081878373653 lookahead=96 coefficient_samples=193 elapsed_seconds=0.021684699999241275\nquality=high frames_out=16000 passband_db=5.095817024629283e-8 alias_db=-127.0518226043956 lookahead=192 coefficient_samples=385 elapsed_seconds=0.04105150000032154",
+      "stdout": "quality=low frames_out=16000 passband_db=0.000009002226537875716 alias_db=-91.7850466593708 lookahead=32 coefficient_samples=65 elapsed_seconds=0.008827599998767255\nquality=balanced frames_out=16000 passband_db=0.0000011649828694479895 alias_db=-110.6081878373653 lookahead=96 coefficient_samples=193 elapsed_seconds=0.02185059999828809\nquality=high frames_out=16000 passband_db=5.095817024629283e-8 alias_db=-127.0518226043956 lookahead=192 coefficient_samples=385 elapsed_seconds=0.04221680000046035",
       "status": "pass"
     },
     {

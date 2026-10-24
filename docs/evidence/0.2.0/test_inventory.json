@@ -1,0 +1,1041 @@
+{
+  "total_named_tests_including_checked_readme": 195,
+  "explicit_invalid_error_named_count": 63,
+  "selection_rule": "name contains /invalid or /error; other edge/state cases excluded from conservative count",
+  "invalid_error_tests": [
+    {
+      "file": "api_test.mbt",
+      "name": "api/invalid input and state reset"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/invalid short output is rejected atomically"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/invalid output alignment is rejected atomically"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/invalid input alignment is rejected atomically"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/invalid nonfinite input is rejected before output writes"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid exact phase allocation budget"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid coefficient allocation budget before construction"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid negative input"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid zero input"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid below minimum input"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid above maximum input"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid negative output"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid zero output"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid below minimum output"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid above maximum output"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid zero channels"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid negative channels"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid nine channels"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid huge channels"
+    },
+    {
+      "file": "model_test.mbt",
+      "name": "model/invalid configuration is classified"
+    },
+    {
+      "file": "stream_test.mbt",
+      "name": "stream/invalid frames and nonfinite samples do not mutate state"
+    },
+    {
+      "file": "stream_wbtest.mbt",
+      "name": "final_api/invalid expanded filter frame reserve is atomic"
+    },
+    {
+      "file": "pcm/pcm_test.mbt",
+      "name": "pcm/invalid odd bytes and nonfinite samples"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid float overflow is classified"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid float source NaN is classified"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid float source infinity is classified"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid float encode alignment"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid float encode zero rate"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid float encode channel limit"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid decoded positive infinity"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid decoded negative infinity"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid decoded NaN"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid wrong float width"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid wrong float alignment"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid wrong float byte rate"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid float channel limit"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid float extra format size"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid extensible GUID"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid extensible precision"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid extensible speaker count"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid extensible extension length"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error short RIFF"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error wrong container"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error wrong form"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error huge RIFF length"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error trailing bytes"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error compressed format"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error wrong depth"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error zero channels"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error too many channels"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error zero rate"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error inconsistent alignment"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error inconsistent byte rate"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error oversized chunk"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error duplicate data"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error duplicate format"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error missing format"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error missing data"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error partial frame"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error encode nonfinite and invalid parameters"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error truncated chunk header and missing odd pad"
+    },
+    {
+      "file": "internal/filter/final_filter_wbtest.mbt",
+      "name": "final_filter/invalid radius rejects before allocation"
+    },
+    {
+      "file": "internal/filter/final_filter_wbtest.mbt",
+      "name": "final_filter/invalid phase and combined budget reject before allocation"
+    }
+  ],
+  "all_tests": [
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 44100 to 48000 ch1 frames0"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 44100 to 48000 ch1 frames1"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 44100 to 48000 ch1 frames3"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 44100 to 48000 ch1 frames127"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 44100 to 48000 ch1 frames1000"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 44100 to 48000 ch2 frames0"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 44100 to 48000 ch2 frames1"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 44100 to 48000 ch2 frames3"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 44100 to 48000 ch2 frames127"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 44100 to 48000 ch2 frames1000"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 44100 ch1 frames0"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 44100 ch1 frames1"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 44100 ch1 frames3"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 44100 ch1 frames127"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 44100 ch1 frames1000"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 44100 ch2 frames0"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 44100 ch2 frames1"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 44100 ch2 frames3"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 44100 ch2 frames127"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 44100 ch2 frames1000"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 16000 ch1 frames0"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 16000 ch1 frames1"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 16000 ch1 frames3"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 16000 ch1 frames127"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 16000 ch1 frames1000"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 16000 ch2 frames0"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 16000 ch2 frames1"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 16000 ch2 frames3"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 16000 ch2 frames127"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 16000 ch2 frames1000"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 16000 to 48000 ch1 frames0"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 16000 to 48000 ch1 frames1"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 16000 to 48000 ch1 frames3"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 16000 to 48000 ch1 frames127"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 16000 to 48000 ch1 frames1000"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 16000 to 48000 ch2 frames0"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 16000 to 48000 ch2 frames1"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 16000 to 48000 ch2 frames3"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 16000 to 48000 ch2 frames127"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 16000 to 48000 ch2 frames1000"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 16000 to 16000 ch1 frames0"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 16000 to 16000 ch1 frames1"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 16000 to 16000 ch1 frames3"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 16000 to 16000 ch1 frames127"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 16000 to 16000 ch1 frames1000"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 16000 to 16000 ch2 frames0"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 16000 to 16000 ch2 frames1"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 16000 to 16000 ch2 frames3"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 16000 to 16000 ch2 frames127"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 16000 to 16000 ch2 frames1000"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 44100 to 44100 ch1 frames0"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 44100 to 44100 ch1 frames1"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 44100 to 44100 ch1 frames3"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 44100 to 44100 ch1 frames127"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 44100 to 44100 ch1 frames1000"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 44100 to 44100 ch2 frames0"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 44100 to 44100 ch2 frames1"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 44100 to 44100 ch2 frames3"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 44100 to 44100 ch2 frames127"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 44100 to 44100 ch2 frames1000"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 48000 ch1 frames0"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 48000 ch1 frames1"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 48000 ch1 frames3"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 48000 ch1 frames127"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 48000 ch1 frames1000"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 48000 ch2 frames0"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 48000 ch2 frames1"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 48000 ch2 frames3"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 48000 ch2 frames127"
+    },
+    {
+      "file": "api_matrix_test.mbt",
+      "name": "api/matrix 48000 to 48000 ch2 frames1000"
+    },
+    {
+      "file": "api_test.mbt",
+      "name": "api/stereo isolation"
+    },
+    {
+      "file": "api_test.mbt",
+      "name": "api/invalid input and state reset"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/caller owned output has exact count and untouched tail"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/invalid short output is rejected atomically"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/invalid output alignment is rejected atomically"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/invalid input alignment is rejected atomically"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/invalid nonfinite input is rejected before output writes"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/empty caller owned conversion succeeds"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/maximum upsample exact seeded chunk and one frame output"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/maximum downsample exact seeded chunk and one frame output"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/new fractional downsample exact seeded chunk and one frame output"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/new fractional upsample exact seeded chunk and one frame output"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/high rate fractional exact seeded chunk and one frame output"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/upper identity exact seeded chunk and one frame output"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/lower identity exact seeded chunk and one frame output"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/uneven rate exact seeded chunk and one frame output"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/six and eight channel impulse isolation"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/reset preserves quality and starts an unrelated stream"
+    },
+    {
+      "file": "final_api_test.mbt",
+      "name": "final_api/eight channel samples match independent mono paths"
+    },
+    {
+      "file": "final_filter_test.mbt",
+      "name": "final_filter/quality radius and storage are applied by the stream"
+    },
+    {
+      "file": "final_filter_test.mbt",
+      "name": "final_filter/severe downsample scales filter support"
+    },
+    {
+      "file": "final_filter_test.mbt",
+      "name": "final_filter/identity remains exact for every quality"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/general fixed rates and eight channels"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/default quality preserves Balanced configuration"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid exact phase allocation budget"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid coefficient allocation budget before construction"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid negative input"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid zero input"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid below minimum input"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid above maximum input"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid negative output"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid zero output"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid below minimum output"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid above maximum output"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid zero channels"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid negative channels"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid nine channels"
+    },
+    {
+      "file": "final_model_test.mbt",
+      "name": "final_model/invalid huge channels"
+    },
+    {
+      "file": "final_quality_test.mbt",
+      "name": "final_quality/low actual output meets fixed spectral gate"
+    },
+    {
+      "file": "final_quality_test.mbt",
+      "name": "final_quality/balanced actual output meets fixed spectral gate"
+    },
+    {
+      "file": "final_quality_test.mbt",
+      "name": "final_quality/high actual output meets fixed spectral gate"
+    },
+    {
+      "file": "final_quality_test.mbt",
+      "name": "final_quality/extreme ratios preserve steady DC after full boundary trim"
+    },
+    {
+      "file": "final_quality_test.mbt",
+      "name": "final_quality/maximum accepted exact phase table actually runs"
+    },
+    {
+      "file": "model_test.mbt",
+      "name": "model/allowed ratios and channel layouts"
+    },
+    {
+      "file": "model_test.mbt",
+      "name": "model/invalid configuration is classified"
+    },
+    {
+      "file": "model_test.mbt",
+      "name": "model/frame length follows timestamp ceiling"
+    },
+    {
+      "file": "model_test.mbt",
+      "name": "model/frame arithmetic rejects negative and overflow"
+    },
+    {
+      "file": "quality_test.mbt",
+      "name": "quality/48000 to 16000 1kHz passband within 0.5dB"
+    },
+    {
+      "file": "quality_test.mbt",
+      "name": "quality/48000 to 16000 12kHz alias at least 50dB below passband"
+    },
+    {
+      "file": "quality_test.mbt",
+      "name": "quality/DC and impulse on every nonidentity ratio"
+    },
+    {
+      "file": "quality_test.mbt",
+      "name": "quality/fixed seed randomized blocks and reset isolation"
+    },
+    {
+      "file": "stream_test.mbt",
+      "name": "stream/one frame blocks equal whole input with one frame output"
+    },
+    {
+      "file": "stream_test.mbt",
+      "name": "stream/identity is exact including stereo and values outside unity"
+    },
+    {
+      "file": "stream_test.mbt",
+      "name": "stream/empty short and lookahead contracts"
+    },
+    {
+      "file": "stream_test.mbt",
+      "name": "stream/zero capacity partial consumption and finish state"
+    },
+    {
+      "file": "stream_test.mbt",
+      "name": "stream/invalid frames and nonfinite samples do not mutate state"
+    },
+    {
+      "file": "stream_test.mbt",
+      "name": "stream/finite numeric overflow faults until reset"
+    },
+    {
+      "file": "stream_test.mbt",
+      "name": "stream/nonfinite error preserves earlier valid history"
+    },
+    {
+      "file": "stream_wbtest.mbt",
+      "name": "stream/frame counter overflow is rejected before mutation"
+    },
+    {
+      "file": "stream_wbtest.mbt",
+      "name": "stream/integer phase clock has no long-run drift"
+    },
+    {
+      "file": "stream_wbtest.mbt",
+      "name": "final_api/invalid expanded filter frame reserve is atomic"
+    },
+    {
+      "file": "pcm/pcm_test.mbt",
+      "name": "pcm/known little endian signed values"
+    },
+    {
+      "file": "pcm/pcm_test.mbt",
+      "name": "pcm/explicit saturation and clipping count"
+    },
+    {
+      "file": "pcm/pcm_test.mbt",
+      "name": "pcm/ties round away from zero"
+    },
+    {
+      "file": "pcm/pcm_test.mbt",
+      "name": "pcm/invalid odd bytes and nonfinite samples"
+    },
+    {
+      "file": "pcm/pcm_test.mbt",
+      "name": "pcm/empty payload and quantization bound"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/independent IEEE float32 fixture decodes exact values"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/canonical IEEE float32 bytes match independent fixture"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/float32 empty and negative zero roundtrip"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/multichannel extensible PCM16 and float32 roundtrip"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/float32 uses binary32 rounding without unit clipping"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid float overflow is classified"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid float source NaN is classified"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid float source infinity is classified"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid float encode alignment"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid float encode zero rate"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid float encode channel limit"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid decoded positive infinity"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid decoded negative infinity"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid decoded NaN"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid wrong float width"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid wrong float alignment"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid wrong float byte rate"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid float channel limit"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid float extra format size"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid extensible GUID"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid extensible precision"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid extensible speaker count"
+    },
+    {
+      "file": "wav/final_wav_test.mbt",
+      "name": "final_wav/invalid extensible extension length"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/PCM16 stereo roundtrip and header"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/empty mono roundtrip"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/unknown odd chunk with padding is skipped"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/data before format is supported"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error short RIFF"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error wrong container"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error wrong form"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error huge RIFF length"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error trailing bytes"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error compressed format"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error wrong depth"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error zero channels"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error too many channels"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error zero rate"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error inconsistent alignment"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error inconsistent byte rate"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error oversized chunk"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error duplicate data"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error duplicate format"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error missing format"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error missing data"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error partial frame"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error encode nonfinite and invalid parameters"
+    },
+    {
+      "file": "wav/wav_test.mbt",
+      "name": "wav/error truncated chunk header and missing odd pad"
+    },
+    {
+      "file": "internal/filter/filter_wbtest.mbt",
+      "name": "filter/every phase preserves steady DC"
+    },
+    {
+      "file": "internal/filter/filter_wbtest.mbt",
+      "name": "filter/zero phase symmetry and finite endpoints"
+    },
+    {
+      "file": "internal/filter/filter_wbtest.mbt",
+      "name": "filter/downsampling passband and alias rejection"
+    },
+    {
+      "file": "internal/filter/filter_wbtest.mbt",
+      "name": "filter/fractional phases represent their timestamp"
+    },
+    {
+      "file": "internal/filter/filter_wbtest.mbt",
+      "name": "filter/resource budget and cutoff reject invalid input"
+    },
+    {
+      "file": "internal/filter/final_filter_wbtest.mbt",
+      "name": "final_filter/radius and phases preserve normalized DC"
+    },
+    {
+      "file": "internal/filter/final_filter_wbtest.mbt",
+      "name": "final_filter/invalid radius rejects before allocation"
+    },
+    {
+      "file": "internal/filter/final_filter_wbtest.mbt",
+      "name": "final_filter/invalid phase and combined budget reject before allocation"
+    },
+    {
+      "file": "internal/filter/final_filter_wbtest.mbt",
+      "name": "final_filter/three preset measured passband and alias thresholds"
+    },
+    {
+      "file": "internal/signals/support_test.mbt",
+      "name": "signals/tone is deterministic and stereo right is silent"
+    },
+    {
+      "file": "internal/signals/support_test.mbt",
+      "name": "signals/chunk helper uses caller capacities and fixed patterns"
+    },
+    {
+      "file": "README.mbt.md",
+      "name": "readme/minimal stereo conversion"
+    }
+  ]
+}

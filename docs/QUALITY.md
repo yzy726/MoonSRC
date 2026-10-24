@@ -1,46 +1,69 @@
-# Initial quality method and evidence
+# Quality evidence — 0.2.0
 
-The thresholds are fixed from goal.md before measurement: for 48000->16000 Hz,
-absolute 1 kHz passband amplitude error <=0.5 dB; alias from 12 kHz input <=-50 dB
-relative to the same-amplitude 1 kHz output. This is a measured initial test, not
-an all-frequency stopband specification or a comparison with mature libraries.
+All values analyze actual MoonSRC native-release output on Windows 11. Core
+quality tests also run on native/js/wasm-gc. Preset/filter parameters are in
+[ALGORITHM](ALGORITHM.md). These finite measurements are not a universal
+passband/stopband specification or quality-parity claim.
 
-Signals: x[n] = 0.5*sin(2*pi*f*n/48000), n=0..47999, f=1000 or 12000 Hz, mono.
-The MoonBit tool tools/quality uses the public resample API and writes 16000
-Double outputs per signal, as little-endian IEEE binary64. No PCM16 quantizer is
-used for this measurement. Files contain no headers.
+## Frozen fixed-signal gate
 
-The steady interval is output indices 256..15743 (15488 samples). Rectangular
-coherent projection measures amplitude as 2/N*hypot(sum(y*sin),sum(y*cos)), using
-absolute output indices and the stated output frequency. This interval contains
-integer numbers of both 1 kHz and 4 kHz periods. For the 12 kHz input the folded
-frequency is 4 kHz. dB error is 20*log10(Apass/0.5); alias is
-20*log10(Aalias/Apass). RMS is reported independently on the same interval.
+Input is 48,000 frames of .5*sin(2*pi*f*n/48000), converted to 16,000 Hz.
+f=1000 measures passband, f=12000 measures the component folding to 4000 Hz.
+Discard 256 output frames at each end, leaving 15,488 coherent frames. Independent
+Python math.fsum computes projections and RMS. Amplitude is
+2*sqrt(sum_cos^2+sum_sin^2)/M; passband error is 20*log10(Apass/.5), alias relative
+level is 20*log10(Aalias/Apass). No FFT/window correction is hidden.
 
-Measured on the recorded Windows native-release toolchain:
+All presets require |passband error|<=.5 dB. Alias limits were fixed before
+measurement at -45/-50/-70 dB for low/balanced/high. Actual values:
 
-| Measurement | Actual | Threshold |
-|---|---:|---:|
-| 1 kHz output amplitude | 0.5000000718210619 | relative to input 0.5 |
-| Passband error | +0.0000012476595447 dB | absolute <=0.5 dB |
-| Aliased 4 kHz amplitude | 0.0000014742144735968 | relative to passband |
-| Alias relative level | -110.608187920042 dB | <=-50 dB |
+| Preset | Passband error, dB | Alias relative, dB | Alias upper limit, dB |
+|---|---:|---:|---:|
+| low | +9.084903752e-06 | -91.785047 | -45 |
+| balanced | +1.247659545e-06 | -110.608188 | -50 |
+| high | +1.336351203e-07 | -127.051823 | -70 |
 
-Reproduce with `python scripts/quality.py`. To retain a fresh report and raw data,
-use `--report _build/quality.json --keep-raw _build/quality-raw`. The script builds
-native-release, reads actual MoonBit binary outputs, performs its own Python
-projection using math.fsum, checks finite samples/counts and fails if thresholds
-are missed. MoonBit unit tests implement a separate threshold check on each
-promised backend. Python has no nonstandard dependencies.
+The [report](evidence/0.2.0/quality.json) retains amplitudes, RMS, exact windows,
+limits, toolchain, hashes and exporter logs. Six committed little-endian binary64
+files hold all 16,000 output frames. Balanced files are bitwise identical to the
+0.1.0 raw baseline under evidence/.
 
-Committed evidence: evidence/quality.json, evidence/passband.f64 and
- evidence/alias.f64. The JSON records SHA-256 hashes, platform, Python/toolchain,
-window and exporter log. Verify or reanalyze those raw files independently.
+## Frequency, DC, impulse and delay
 
-Other checks include DC normalization at every phase, impulse gain, stereo
-isolation, silence, boundaries and fixed-seed block partitions. DC steady windows
-trim ceil(96*Fout/Fin)+1 output frames: 3x interpolation needs more than 256
-frames. An earlier test used 256 uniformly and correctly revealed boundary
-transients; its window was corrected without relaxing the frozen 48->16 quality
-thresholds. No speech recording, listening-only claim or external quality parity
-claim substitutes for these measurements.
+The report includes all 123 measured frequency points across common/extreme rate
+pairs and presets, plus 27 DC/centered-impulse cases. Grid analysis excludes the
+full filter radius mapped to output frames plus eight output frames and uses complete periods.
+DC=.25; measured impulse peak and expected timestamp are recorded. The grid
+provides measured response/alias values, including transition-band attenuation;
+no unfavorable point is removed to improve a summary.
+
+Window taper and cutoff attenuate near the transition band. Increasing quality
+changes bandwidth, alias rejection, CPU, initialization and lookahead. The 1 kHz
+gate does not imply flat response up to Nyquist. LowLatency still anti-aliases;
+identity is exact copying. At 48->16 kHz lookahead is 32/96/192 input frames,
+approximately .667/2/4 ms; severe ratios scale support and delay.
+
+## External reference
+
+[reference_compare.json](evidence/0.2.0/reference_compare.json) retains 60 shared
+cases: five rate/channel combinations, three MoonSRC presets, four signals
+(centered impulse, DC, 1 kHz and stopband). Both implementations receive identical
+float32 values. MoonSRC computes in Double and writes float32; reference is
+official libsamplerate 0.2.2, Best Sinc Interpolator (converter 0), src_simple.
+
+Centered impulse alignment finds integer lag [0] frames. Analysis excludes
+both boundary supports plus 32 output frames. MoonSRC-minus-reference frame-count
+deltas are [-1, 0, 1]; the reference has a different finite-frame policy from
+MoonSRC's ceil contract. Aligned RMSE and separate signal gains describe kernel
+differences; samplewise equality is not required. Version/hash/ABI/input hashes,
+complete results and limitations are retained. See [sources](../THIRD_PARTY.md).
+
+```sh
+python scripts/quality.py --keep-raw _build/quality-020 --report _build/quality-020.json
+python scripts/reference_compare.py --fetch-reference --report _build/reference-020.json
+```
+
+The second command verifies a pinned official Windows ZIP before loading its
+reference-only DLL under ignored _build. Other hosts can supply --library.
+It adds no product DSP dependency and publishes nothing. Timing scopes and
+memory measurements are explained in [BENCHMARKS](BENCHMARKS.md).

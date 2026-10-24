@@ -1,67 +1,56 @@
-# Verification and reproduction
+# Verification and test organization — 0.2.0
 
-Initial local verification uses Moon 0.1.20260920, moonc 0.10.14+7d59c7ec9,
-moonrun 0.1.20260920, Node 22.19.0, Python 3.13.5 and the Windows native C backend.
-New DSP, stream and byte-adapter behavior started with failing tests. Tests use
-assertions rather than debug-output snapshots; no snapshots were refreshed to
-hide numerical failures.
+Final candidate: **195 tests per backend**, including the checked README.
+[test_inventory.json](evidence/0.2.0/test_inventory.json) lists every name and a
+conservative 63 explicitly named /invalid or /error cases, exceeding the
+required 30 without counting other state/edge tests. The shared suite runs on
+native/js/wasm-gc; this is not 585 distinct scenarios.
 
-Run in the source root:
+Coverage includes config/clock/budgets, filters/presets/severe ratios, exact
+whole/chunk equality, fixed seeds/one-frame/tiny buffers, 1..8 channels, independent
+mono equivalence, finish/reset/fault, overflow, PCM16 and malformed/canonical
+float32/extensible WAV. Assertions and explicit tolerances fix behavior. Original
+valid 0.1.0 scenarios remain regressions; invalid cases newly supported by 0.2.0
+were deliberately updated.
 
 ```sh
 moon fmt --check
 moon check --target native --deny-warn --warn-list +73
-moon check --target js --deny-warn --warn-list +73
-moon check --target wasm-gc --deny-warn --warn-list +73
 moon build --target native --deny-warn
-moon build --target js --deny-warn
-moon build --target wasm-gc --deny-warn
 moon test --target native --deny-warn
+moon check --target js --deny-warn --warn-list +73
+moon build --target js --deny-warn
 moon test --target js --deny-warn
+moon check --target wasm-gc --deny-warn --warn-list +73
+moon build --target wasm-gc --deny-warn
 moon test --target wasm-gc --deny-warn
+python scripts/e2e.py --report _build/e2e-020.json
+python scripts/run_examples.py --report _build/examples-020.json
+python scripts/quality.py --keep-raw _build/quality-020 --report _build/quality-020.json
+python scripts/consumer.py --report _build/consumer-020.json
+python scripts/consumer.py --registry-version 0.1.0 --report _build/registry-010.json
+moon doc
 moon info --target native
 moon fmt
+moon fmt --check
 ```
 
-Then run the five Python entrypoints e2e.py, quality.py, run_examples.py,
-bounded_stream.py and consumer.py under scripts/. They use only the Python
-standard library, build actual native-release binaries, fail on unmet assertions
-and optionally write --report JSON to a chosen path. Verification output and
-current counts are recorded in LOCAL_ACCEPTANCE and evidence/final_checks.json.
+[24 E2E flows](evidence/0.2.0/e2e.json) check direct sinc values, three presets,
+multichannel float/extensible, severe ratios, nonfinite errors, Unicode and
+existing-file preservation. [Nine examples](evidence/0.2.0/examples.json) make
+real assertions, including byte-identical library/CLI WAV output.
 
-Coverage includes 70 individually named rate/channel/length matrix tests; every
-supported pair in mono/stereo; zero/one/short input; single-frame output; phase/DC/
-impulse response; finite overflow and nonfinite inputs; state/reset behavior;
-whole/chunk equality; seeded partitions; PCM16 endpoints/rounding; and malformed
-WAV metadata/chunks. More than 15 distinct error/state conditions have executable
-checks. See *_test.mbt (public behavior) and *_wbtest.mbt (private phase/filter
-invariants). The executable README example is a named mbt check test.
+The [0.2.0 archive consumer](evidence/0.2.0/consumer_local.json) uses new eight-
+channel/quality/float32/caller-output APIs on all backends. The [installed 0.1.0
+consumer](evidence/0.2.0/consumer_registry_0.1.0.json) verifies old APIs and an
+exhaustive WavError match without local library membership. Source-tree examples
+use the local library; only the registry validator is an actual installed test.
+Archive checks exclude private material and preserve the root workspace.
 
-CLI evidence includes 12 end-to-end flows: help, generated fixtures, stereo
-44100->48000 with isolation, exact identity, mono 48000->16000, existing-output
-preservation, malformed input, argument/path errors, independent direct sinc
-reference, Unicode paths, oversized/nonregular files and generator budgets.
-run_examples additionally compares the library WAV example with CLI output byte
-for byte. Every fixture is generated from declared formulas.
-
-consumer.py packages the source locally, checks package exclusions, extracts into
-a fresh temporary directory, writes a moon.work there and uses a separate module
-with only public root/PCM/WAV imports. It runs native/js/wasm-gc. This verifies the
-local archive; Mooncakes publication and registry installation are deferred by
-user instruction. It does not change the source project's workspace membership.
-
-CI configuration uses the official versioned installer with
-0.10.14+7d59c7ec9. Its Linux bundle was checked reachable during setup. The installer
-syntax follows the [official project workflow](https://github.com/moonbitlang/llvm.mbt/blob/master/.github/workflows/check.yaml).
-CI has backend matrix and integration jobs, with the same local commands and
-saved evidence. Remote runs and their exact commits are available in
-[GitHub Actions](https://github.com/yzy726/MoonSRC/actions/workflows/ci.yml).
-The existing Copilot setup workflow is preserved. Optional local hooks are
-documented in .githooks/README.md.
-
-For the first quality pass, an over-short uniform DC trim affected 3x interpolation;
-the test window was corrected to actual latency. Core quality thresholds were
-unchanged. For a correct steady comparison always exclude the complete boundary
-support. Other diagnostics corrected current-toolchain syntax/deprecations;
-failures were resolved rather than disabling warnings or deleting acceptance
-cases. Cross-backend checks use the same deterministic inputs and tolerances.
+[Final commands](evidence/0.2.0/final_checks.json) retain exit codes, counts and
+timestamps. Long-stream/matrix/reference measurements were run after relevant
+code changes and retained; unchanged-path applicability is explained in
+[BENCHMARKS](BENCHMARKS.md). The retained local reports describe the 2026-10-18
+snapshot. Current remote results are in [GitHub Actions](https://github.com/yzy726/MoonSRC/actions/workflows/ci.yml);
+old-version CI is not used as final-version evidence. Local acceptance notes
+are excluded from Git and package archives.

@@ -1,6 +1,6 @@
 # MoonSRC 0.2.0 final acceptance scope
 
-The user authorized the final goals from goal.md with version **0.2.0**, replacing the planned 1.0.0 label. Work and commits remain local; remote CI and Mooncakes publication are deferred. Published 0.1.0 is retained for compatibility and registry-consumer validation. This file defines acceptance before implementation; completion evidence is reported separately.
+The user authorized the final goals from goal.md with version **0.2.0**, replacing the planned 1.0.0 label. The initial implementation was accepted locally; subsequent validation runs the GitHub CI workflow. Mooncakes publication is performed by the maintainer. Published 0.1.0 is retained for compatibility and registry-consumer validation. Reproducible evidence is described in [TESTING](TESTING.md), [QUALITY](QUALITY.md) and [BENCHMARKS](BENCHMARKS.md).
 
 | ID | Required deliverable | Acceptance |
 |---|---|---|

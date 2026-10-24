@@ -1,0 +1,21 @@
+{
+  "sha256": {
+    "balanced-alias.f64": "fa4319e2cd9639cf569220c84714cd14fa96304c79d6e1969b342df55c3b1cfe",
+    "balanced-passband.f64": "f27f93cbaf7eb5c37cef0b4a1db61e6bea6a2b232cc7907ce0abcf969256f9c7",
+    "bounded_stream.json": "7645af1562422c5df81199614fe39c010a2e72b6f4f441b28463ef448802937f",
+    "bounded_stream_optimized.json": "d68683e79ce0398a174fea05c0793b7171c05da226d8a0e53ad4b293e9e957c4",
+    "consumer_local.json": "088f08258018e475466bdfcb038693bc4196400efbc5a164ca9120c40676ad71",
+    "consumer_registry_0.1.0.json": "debcf642b6990f3a6778ec854b124e7634bb5c4915ccd9595a9b959c851748ef",
+    "e2e.json": "e88adaa15245b7249eec5678498c9583606541c30114ce1a4c0b4f9163f00fed",
+    "examples.json": "972d317a786d675065f9ad10cdb216d43365e00cb20954031ca62a4587d664af",
+    "final_checks.json": "bc3542e91e788bae3d218217b0645043e3d102f23d8c6c48085c0079ff841737",
+    "high-alias.f64": "2ceb06b327e106f581e294677337668e2a8f6f35941976c94800292fb829392f",
+    "high-passband.f64": "dd39766d12c008e9923fb8991a2f8cffc0c05122303b0bf7f2bc2b09c138ee27",
+    "low-alias.f64": "612c15802a0e60d654f9fc5be0d43e26f77633a24c8462dabe8b9f13f4d23814",
+    "low-passband.f64": "e26b385cd447e2e9e9d19d7e514e31d4f65c23594ae34098dfab0266f6f524a3",
+    "performance_change.json": "9a84e351e18e11163ab9f0860422da00fbcefe1ddf6a7c4137b55c8036b346bb",
+    "quality.json": "3b1cb3b9a4009e6527a578884c0ee6403beac7052842a81d02a5dc4adbb5bf69",
+    "reference_compare.json": "5fad06e4942bd5f74ca8564a7a4ecd25332f606a6f7a14ec84a2bfff9502920c",
+    "test_inventory.json": "134c207fbc3189139fe954ee6deb266eac3c2234f7561425cd7774eecd72f9fe"
+  }
+}
