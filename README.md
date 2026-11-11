@@ -1,14 +1,19 @@
 # MoonSRC
 
+## 0.3.0 更新
+
+- 适配 MoonBit 0.10.20，迁移派生语法及显式整数类型名称。
+- 同步 CLI 版本、生成接口与持续集成工具链。
+
 纯 MoonBit 的流式音频采样率转换库。使用带抗混叠低通的多相 Blackman sinc FIR，
 支持交错 PCM、调用者输出缓冲区和明确的 `finish` 语义。
 
-当前源码版本 **0.2.0**。功能、测试与测量方法见 [测试说明](docs/TESTING.md)。
+当前源码版本 **0.3.0**。功能、测试与测量方法见 [测试说明](docs/TESTING.md)。
 远端构建状态见 [GitHub Actions](https://github.com/yzy726/MoonSRC/actions/workflows/ci.yml)；Mooncakes 由维护者发布。
 
 ## 支持范围
 
-| 维度 | 0.2.0 功能 |
+| 维度 | 0.3.0 功能 |
 |---|---|
 | 速率 | 整数 8000..192000 Hz；最多 4096 精确相位、1,048,576 个系数，超预算返回 ResourceLimit |
 | 声道 | 1..8，交错排列，各声道独立；不做声道重映射 |
@@ -26,8 +31,8 @@
 
 ## 从源码验证
 
-需要 MoonBit、native C 编译器、Node.js 和 Python 3.10+。本机为 Moon
-0.1.20260920、moonc 0.10.14+7d59c7ec9、Node 22.19.0、Python 3.13.5。
+需要 MoonBit、native C 编译器、Node.js 和 Python 3.10+。本次兼容性更新使用 Moon
+0.1.20261104、moonc 0.10.20+65efd5b93 验证。
 无额外第三方 Mooncakes 运行依赖。在源码目录执行：
 
 ```sh
@@ -46,7 +51,7 @@ python scripts/consumer.py
 
 `consumer.py` 将当前 `moon package` ZIP 解压到隔离工作区，验证三个后端的公开 API。
 `python scripts/consumer.py --registry-version 0.1.0` 真正从 Mooncakes 安装已发布版本，
-运行旧版兼容场景。后者不包含新 API；0.2.0 注册表安装验证需待发布后执行。
+运行旧版兼容场景；验证当前发布版本时，将参数改为 `0.3.0`。
 
 ## 库调用
 

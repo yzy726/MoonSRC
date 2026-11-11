@@ -6,11 +6,11 @@ import {
 }
 
 // Values
-pub fn chunked(@MoonSRC.Config, ArrayView[Double], ArrayView[Int], Int) -> Result[Array[Double], @MoonSRC.ResampleError]
+pub fn chunked(@MoonSRC.Config, ArrayView[Double], ArrayView[Int32], Int32) -> Result[Array[Double], @MoonSRC.ResampleError]
 
-pub fn magnitude(ArrayView[Double], Int, Double, Int) -> Double
+pub fn magnitude(ArrayView[Double], Int32, Double, Int32) -> Double
 
-pub fn tone(Int, Double, Int, Int) -> Array[Double]
+pub fn tone(Int32, Double, Int32, Int32) -> Array[Double]
 
 // Errors
 

@@ -4,7 +4,7 @@ fn fixture() -> Bytes {
 }
 
 ///|
-fn patch(bytes : Bytes, offset : Int, value : Bytes) -> Bytes {
+fn patch(bytes : Bytes, offset : Int32, value : Bytes) -> Bytes {
   let copy = bytes.to_array()
   for i in 0..<value.length() {
     copy[offset + i] = value[i]

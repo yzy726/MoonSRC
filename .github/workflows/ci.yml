@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 env:
-  MOONBIT_INSTALL_VERSION: 0.10.14+7d59c7ec9
+  MOONBIT_INSTALL_VERSION: 0.10.20+65efd5b93
 
 jobs:
   backends:

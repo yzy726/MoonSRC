@@ -2,10 +2,10 @@
 /// Synthetic test signal: 0.5*sin(2*pi*f*n/rate) on channel 0, other channels zero.
 /// Generator inputs are fixed by tests/examples, not untrusted PCM configuration.
 pub fn tone(
-  rate : Int,
+  rate : Int32,
   frequency : Double,
-  frames : Int,
-  channels : Int,
+  frames : Int32,
+  channels : Int32,
 ) -> Array[Double] {
   if rate < 1 || frames < 0 || frames > 1048576 || channels < 1 || channels > 8 {
     abort("invalid test signal budget")
@@ -31,8 +31,8 @@ pub fn tone(
 pub fn chunked(
   config : @src.Config,
   input : ArrayView[Double],
-  pattern : ArrayView[Int],
-  output_frames : Int,
+  pattern : ArrayView[Int32],
+  output_frames : Int32,
 ) -> Result[Array[Double], @src.ResampleError] {
   let channels = config.channels()
   if input.length() % channels != 0 {
@@ -96,9 +96,9 @@ pub fn chunked(
 /// must contain complete periods for the frequency being measured.
 pub fn magnitude(
   samples : ArrayView[Double],
-  rate : Int,
+  rate : Int32,
   frequency : Double,
-  trim : Int,
+  trim : Int32,
 ) -> Double {
   if rate < 1 || trim < 0 || trim > (samples.length() - 1) / 2 {
     abort("invalid analysis window")

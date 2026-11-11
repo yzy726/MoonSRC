@@ -2,7 +2,7 @@
 extern "C" fn native_seconds() -> Double = "moonsrc_probe_seconds"
 
 ///|
-extern "C" fn native_rss(peak : Int) -> Int64 = "moonsrc_probe_rss"
+extern "C" fn native_rss(peak : Int32) -> Int64 = "moonsrc_probe_rss"
 
 ///|
 /// Monotonic wall clock for native verification and examples only.

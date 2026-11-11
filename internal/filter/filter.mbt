@@ -1,11 +1,11 @@
 ///|
 /// Input-frame radius retained by the original Balanced configuration.
-pub const FILTER_RADIUS : Int = 96
+pub const FILTER_RADIUS : Int32 = 96
 
 ///|
 /// Compatibility builder for the original 193-tap table with up to 160 phases.
 pub fn make_filter(
-  phases : Int,
+  phases : Int32,
   cutoff : Double,
 ) -> Result[FixedArray[FixedArray[Double]], String] {
   if phases > 160 {
@@ -18,9 +18,9 @@ pub fn make_filter(
 /// Internal exact-phase FIR builder with checked allocation budget.
 /// Radius 1..1536; <=4096 phases; <=1048576 coefficient Doubles.
 pub fn make_filter_with_options(
-  phases : Int,
+  phases : Int32,
   cutoff : Double,
-  radius : Int,
+  radius : Int32,
 ) -> Result[FixedArray[FixedArray[Double]], String] {
   if phases < 1 ||
     phases > 4096 ||

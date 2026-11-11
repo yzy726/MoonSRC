@@ -2,8 +2,8 @@
 fn drain_stream(
   config : @MoonSRC.Config,
   input : Array[Double],
-  block : Int,
-  capacity : Int,
+  block : Int32,
+  capacity : Int32,
 ) -> Array[Double] raise {
   let stream = @MoonSRC.Resampler::new(config)
   let output = FixedArray::make(capacity * config.channels(), 0.0)

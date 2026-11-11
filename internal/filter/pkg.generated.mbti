@@ -2,11 +2,11 @@
 package "Ag108/MoonSRC/internal/filter"
 
 // Values
-pub const FILTER_RADIUS : Int = 96
+pub const FILTER_RADIUS : Int32 = 96
 
-pub fn make_filter(Int, Double) -> Result[FixedArray[FixedArray[Double]], String]
+pub fn make_filter(Int32, Double) -> Result[FixedArray[FixedArray[Double]], String]
 
-pub fn make_filter_with_options(Int, Double, Int) -> Result[FixedArray[FixedArray[Double]], String]
+pub fn make_filter_with_options(Int32, Double, Int32) -> Result[FixedArray[FixedArray[Double]], String]
 
 // Errors
 

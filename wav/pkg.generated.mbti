@@ -8,24 +8,25 @@ import {
 // Values
 pub fn decode(Bytes) -> Result[Audio, WavError]
 
-pub fn encode(Int, Int, ArrayView[Double]) -> Result[Encoded, WavError]
+pub fn encode(Int32, Int32, ArrayView[Double]) -> Result[Encoded, WavError]
 
-pub fn encode_float32(Int, Int, ArrayView[Double]) -> Result[Encoded, WavError]
+pub fn encode_float32(Int32, Int32, ArrayView[Double]) -> Result[Encoded, WavError]
 
 // Errors
 
 // Types and methods
 pub(all) struct Audio {
-  rate : Int
-  channels : Int
+  rate : Int32
+  channels : Int32
   samples : Array[Double]
 }
 
 pub(all) struct Encoded {
   bytes : Bytes
-  clipped_samples : Int
+  clipped_samples : Int32
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) enum WavError {
   InvalidHeader
   Truncated
@@ -37,9 +38,9 @@ pub(all) enum WavError {
   MissingData
   DuplicateChunk
   FrameAlignment
-  NonFinite(Int)
+  NonFinite(Int32)
   ResourceLimit
-} derive(Eq, @debug.Debug)
+}
 pub fn WavError::equal(Self, Self) -> Bool
 pub fn WavError::not_equal(Self, Self) -> Bool
 pub fn WavError::to_repr(Self) -> @debug.Repr

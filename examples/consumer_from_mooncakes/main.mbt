@@ -45,7 +45,7 @@ fn main {
 }
 
 ///|
-fn legacy_error_tag(error : @wav.WavError) -> Int {
+fn legacy_error_tag(error : @wav.WavError) -> Int32 {
   match error {
     InvalidHeader => 0
     Truncated => 1
