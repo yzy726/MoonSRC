@@ -66,7 +66,7 @@ pub fn resample_into(
   config : Config,
   input : ArrayView[Double],
   output_buffer : FixedArray[Double],
-) -> Result[Int, ResampleError] {
+) -> Result[Int32, ResampleError] {
   let channels = config.channels
   if input.length() % channels != 0 {
     return Err(MisalignedInput)

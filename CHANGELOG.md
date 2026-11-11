@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.0 - 2026-11-11
+
+- Support MoonBit 0.10.20 and migrate derive syntax and explicit integer type names.
+- Synchronize the CLI version, generated interfaces and CI toolchain.
+
 ## 0.2.0 — local final acceptance, 2026-10-18
 
 - Extend fixed integer rates to 8000..192000 Hz and 1..8 channels, with checked

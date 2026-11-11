@@ -23,7 +23,7 @@ fn write_result(
 }
 
 ///|
-fn number(text : String) -> Int {
+fn number(text : String) -> Int32 {
   @string.parse_int(text) catch {
     _ => abort("integer export option required")
   }

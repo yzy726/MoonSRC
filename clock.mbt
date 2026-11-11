@@ -1,5 +1,5 @@
 ///|
-fn gcd(a : Int, b : Int) -> Int {
+fn gcd(a : Int32, b : Int32) -> Int32 {
   for a = a, b = b; b != 0; {
     continue b, a % b
   } nobreak {

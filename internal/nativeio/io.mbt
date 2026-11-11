@@ -4,10 +4,10 @@ extern "C" fn read_native(path : Bytes) -> Bytes = "moonsrc_read_file"
 
 ///|
 #borrow(path, content)
-extern "C" fn write_native(path : Bytes, content : Bytes) -> Int = "moonsrc_write_new_file"
+extern "C" fn write_native(path : Bytes, content : Bytes) -> Int32 = "moonsrc_write_new_file"
 
 ///|
-extern "C" fn exit_native(code : Int) -> Unit = "moonsrc_exit"
+extern "C" fn exit_native(code : Int32) -> Unit = "moonsrc_exit"
 
 ///|
 /// Read only a regular, seekable file of 1..33,554,476 bytes. The native shim
@@ -39,6 +39,6 @@ pub fn write_new_file(path : String, bytes : Bytes) -> Result[Unit, String] {
 
 ///|
 /// Terminate a command with the requested status (native CLI only).
-pub fn exit(code : Int) -> Unit {
+pub fn exit(code : Int32) -> Unit {
   exit_native(code)
 }

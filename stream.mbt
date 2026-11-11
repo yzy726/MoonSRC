@@ -1,8 +1,8 @@
 ///|
 /// Counts for this call, in complete frames. Retry unconsumed input.
 pub(all) struct Progress {
-  consumed_frames : Int
-  produced_frames : Int
+  consumed_frames : Int32
+  produced_frames : Int32
   needs_input : Bool
   needs_output : Bool
   finished : Bool
@@ -11,8 +11,8 @@ pub(all) struct Progress {
 ///|
 /// Future input needed by the centered filter; no frames are prepended to output.
 pub(all) struct Latency {
-  input_frames : Int
-  output_frames : Int
+  input_frames : Int32
+  output_frames : Int32
   seconds : Double
 }
 
@@ -21,11 +21,11 @@ pub(all) struct Latency {
 pub(all) struct Stats {
   input_frames : Int64
   output_frames : Int64
-  buffered_frames : Int
-  peak_history_frames : Int
-  history_capacity_samples : Int
-  coefficient_samples : Int
-  internal_samples : Int
+  buffered_frames : Int32
+  peak_history_frames : Int32
+  history_capacity_samples : Int32
+  coefficient_samples : Int32
+  internal_samples : Int32
 }
 
 ///|
@@ -42,13 +42,13 @@ pub struct Resampler {
   priv config : Config
   priv coefficients : FixedArray[FixedArray[Double]]
   priv history : FixedArray[Double]
-  priv capacity : Int
-  priv radius : Int
+  priv capacity : Int32
+  priv radius : Int32
   priv mut input_count : Int64
   priv mut output_count : Int64
   priv mut position : Int64
-  priv mut phase : Int
-  priv mut peak : Int
+  priv mut phase : Int32
+  priv mut peak : Int32
   priv mut state : StreamState
 }
 
@@ -110,7 +110,7 @@ pub fn Resampler::is_finished(self : Resampler) -> Bool {
 }
 
 ///|
-fn Resampler::live_frames(self : Resampler) -> Int {
+fn Resampler::live_frames(self : Resampler) -> Int32 {
   if self.radius == 0 || self.state is Finished {
     return 0
   }
@@ -155,7 +155,7 @@ fn Resampler::advance(self : Resampler) -> Unit {
 fn Resampler::emit(
   self : Resampler,
   output : FixedArray[Double],
-  offset : Int,
+  offset : Int32,
 ) -> Result[Unit, ResampleError] {
   let row = self.coefficients[self.phase]
   let channels = self.config.channels
@@ -209,9 +209,9 @@ fn Resampler::emit(
 ///|
 fn Resampler::progress(
   self : Resampler,
-  consumed : Int,
-  produced : Int,
-  capacity : Int,
+  consumed : Int32,
+  produced : Int32,
+  capacity : Int32,
 ) -> Progress {
   {
     consumed_frames: consumed,

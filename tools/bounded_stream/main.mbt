@@ -3,8 +3,8 @@ fn feed(
   stream : @src.Resampler,
   input : Array[Double],
   output : FixedArray[Double],
-  channels : Int,
-  frames : Int,
+  channels : Int32,
+  frames : Int32,
 ) -> Double {
   let mut remaining = frames
   let mut checksum = 0.0

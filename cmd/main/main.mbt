@@ -4,7 +4,11 @@ priv suberror CliError {
 }
 
 ///|
-fn decimal(text : String, minimum : Int, maximum : Int) -> Int raise CliError {
+fn decimal(
+  text : String,
+  minimum : Int32,
+  maximum : Int32,
+) -> Int32 raise CliError {
   if text.length() == 0 {
     raise CliError("empty numeric option")
   }
@@ -28,9 +32,9 @@ fn decimal(text : String, minimum : Int, maximum : Int) -> Int raise CliError {
 ///|
 fn options(
   args : Array[String],
-  start : Int,
+  start : Int32,
   fixture : Bool,
-) -> (Int, Int, Int, @src.Quality, Bool) raise CliError {
+) -> (Int32, Int32, Int32, @src.Quality, Bool) raise CliError {
   let mut rate = 0
   let mut channels = 1
   let mut frames = 4800
@@ -91,12 +95,12 @@ fn run(args : Array[String]) -> Unit raise CliError {
   if args.length() == 0 ||
     (args.length() == 1 && (args[0] == "--help" || args[0] == "-h")) {
     println(
-      "MoonSRC 0.2.0\nmoonsrc convert INPUT.wav OUTPUT.wav --rate 48000\nmoonsrc fixture OUTPUT.wav --rate 44100 --channels 2 --frames 441\nSupports PCM16LE/IEEE float32 WAV, 1..8 channels, fixed 8000..192000 Hz within phase/table budgets.\nconvert options: --quality low|balanced|high (default balanced), --format pcm16|float32 (default pcm16).\nfixture options: --channels 1..8 --frames N --format pcm16|float32.\nOutput paths must be new. Exit 0=success, 2=invalid input or I/O failure.",
+      "MoonSRC 0.3.0\nmoonsrc convert INPUT.wav OUTPUT.wav --rate 48000\nmoonsrc fixture OUTPUT.wav --rate 44100 --channels 2 --frames 441\nSupports PCM16LE/IEEE float32 WAV, 1..8 channels, fixed 8000..192000 Hz within phase/table budgets.\nconvert options: --quality low|balanced|high (default balanced), --format pcm16|float32 (default pcm16).\nfixture options: --channels 1..8 --frames N --format pcm16|float32.\nOutput paths must be new. Exit 0=success, 2=invalid input or I/O failure.",
     )
     return
   }
   if args.length() == 1 && args[0] == "--version" {
-    println("0.2.0")
+    println("0.3.0")
     return
   }
   if args[0] == "fixture" && args.length() >= 4 {

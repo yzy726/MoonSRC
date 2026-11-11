@@ -1,36 +1,38 @@
 ///|
 /// Errors returned for invalid configuration, samples, resources or stream state.
+#derive(Debug, Eq)
 pub(all) enum ResampleError {
-  InvalidRate(Int)
-  UnsupportedRatio(Int, Int)
-  InvalidChannels(Int)
+  InvalidRate(Int32)
+  UnsupportedRatio(Int32, Int32)
+  InvalidChannels(Int32)
   MisalignedInput
   MisalignedOutput
-  NonFinite(Int)
+  NonFinite(Int32)
   InvalidState
   FrameOverflow
   NumericOverflow
   ResourceLimit
-} derive(Debug, Eq)
+}
 
 ///|
 /// Validated immutable configuration for one interleaved PCM stream.
+#derive(Debug, Eq)
 pub struct Config {
-  priv input_rate : Int
-  priv output_rate : Int
-  priv channels : Int
-  priv numerator : Int
-  priv denominator : Int
+  priv input_rate : Int32
+  priv output_rate : Int32
+  priv channels : Int32
+  priv numerator : Int32
+  priv denominator : Int32
   priv quality : Quality
-} derive(Debug, Eq)
+}
 
 ///|
 /// Accept fixed rates 8000..192000 Hz and 1..8 channels, using Balanced quality.
 /// Exact phase/coefficient budgets are checked before construction allocates.
 pub fn Config::new(
-  input_rate : Int,
-  output_rate : Int,
-  channels : Int,
+  input_rate : Int32,
+  output_rate : Int32,
+  channels : Int32,
 ) -> Result[Config, ResampleError] {
   Config::with_quality(input_rate, output_rate, channels, Balanced)
 }
@@ -38,11 +40,12 @@ pub fn Config::new(
 ///|
 /// Quality presets with increasing filter support and distinct cutoff rolloffs.
 /// Balanced retains the 0.1.0 behavior for every previously supported pair.
+#derive(Debug, Eq)
 pub(all) enum Quality {
   LowLatency
   Balanced
   HighQuality
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Quality with @debug.Debug::{to_repr}
@@ -51,7 +54,7 @@ pub extend Quality with @debug.Debug::{to_repr}
 pub extend Quality with Eq::{equal, not_equal}
 
 ///|
-fn Quality::base_radius(self : Quality) -> Int {
+fn Quality::base_radius(self : Quality) -> Int32 {
   match self {
     LowLatency => 32
     Balanced => 96
@@ -63,9 +66,9 @@ fn Quality::base_radius(self : Quality) -> Int {
 /// Validate the full configuration without allocation. At most 4096 exact phases
 /// and 1048576 coefficient Doubles. Extreme co-prime pairs return ResourceLimit.
 pub fn Config::with_quality(
-  input_rate : Int,
-  output_rate : Int,
-  channels : Int,
+  input_rate : Int32,
+  output_rate : Int32,
+  channels : Int32,
   quality : Quality,
 ) -> Result[Config, ResampleError] {
   if input_rate < 8000 || input_rate > 192000 {
@@ -106,19 +109,19 @@ pub fn Config::quality(self : Config) -> Quality {
 
 ///|
 /// Input sample rate, in complete frames per second.
-pub fn Config::input_rate(self : Config) -> Int {
+pub fn Config::input_rate(self : Config) -> Int32 {
   self.input_rate
 }
 
 ///|
 /// Output sample rate, in complete frames per second.
-pub fn Config::output_rate(self : Config) -> Int {
+pub fn Config::output_rate(self : Config) -> Int32 {
   self.output_rate
 }
 
 ///|
 /// Number of interleaved samples in each frame.
-pub fn Config::channels(self : Config) -> Int {
+pub fn Config::channels(self : Config) -> Int32 {
   self.channels
 }
 

@@ -1,5 +1,6 @@
 ///|
 /// RIFF/WAVE errors for PCM16, IEEE float32 and validated extensible headers.
+#derive(Debug, Eq)
 pub(all) enum WavError {
   InvalidHeader
   Truncated
@@ -11,9 +12,9 @@ pub(all) enum WavError {
   MissingData
   DuplicateChunk
   FrameAlignment
-  NonFinite(Int)
+  NonFinite(Int32)
   ResourceLimit
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend WavError with @debug.Debug::{to_repr}
@@ -24,8 +25,8 @@ pub extend WavError with Eq::{equal, not_equal}
 ///|
 /// Decoded interleaved samples; the byte adapter does not resample.
 pub(all) struct Audio {
-  rate : Int
-  channels : Int
+  rate : Int32
+  channels : Int32
   samples : Array[Double]
 }
 
@@ -33,11 +34,11 @@ pub(all) struct Audio {
 /// Encoded WAV bytes and PCM16 saturation count (zero for float32).
 pub(all) struct Encoded {
   bytes : Bytes
-  clipped_samples : Int
+  clipped_samples : Int32
 }
 
 ///|
-fn tag(bytes : Bytes, offset : Int, expected : Bytes) -> Bool {
+fn tag(bytes : Bytes, offset : Int32, expected : Bytes) -> Bool {
   for i in 0..<expected.length() {
     if bytes[offset + i] != expected[i] {
       return false
@@ -47,12 +48,12 @@ fn tag(bytes : Bytes, offset : Int, expected : Bytes) -> Bool {
 }
 
 ///|
-fn u16(bytes : Bytes, offset : Int) -> Int {
+fn u16(bytes : Bytes, offset : Int32) -> Int32 {
   bytes[offset].to_int() + bytes[offset + 1].to_int() * 256
 }
 
 ///|
-fn u32(bytes : Bytes, offset : Int) -> Int64 {
+fn u32(bytes : Bytes, offset : Int32) -> Int64 {
   bytes[offset].to_int64() +
   bytes[offset + 1].to_int64() * 256L +
   bytes[offset + 2].to_int64() * 65536L +
@@ -60,7 +61,7 @@ fn u32(bytes : Bytes, offset : Int) -> Int64 {
 }
 
 ///|
-fn sample32(bytes : Bytes, offset : Int) -> Double {
+fn sample32(bytes : Bytes, offset : Int32) -> Double {
   Float::reinterpret_from_int(
     u16(bytes, offset) | (u16(bytes, offset + 2) << 16),
   ).to_double()
@@ -94,7 +95,7 @@ pub fn decode(bytes : Bytes) -> Result[Audio, WavError] {
   let mut rate = 0
   let mut channels = 0
   let mut width = 0
-  let mut data_start : Int? = None
+  let mut data_start : Int32? = None
   let mut data_length = 0
   while offset < limit {
     if limit - offset < 8 {
@@ -219,8 +220,8 @@ pub fn decode(bytes : Bytes) -> Result[Audio, WavError] {
 
 ///|
 fn encode_audio(
-  rate : Int,
-  channels : Int,
+  rate : Int32,
+  channels : Int32,
   samples : ArrayView[Double],
   floating : Bool,
 ) -> Result[Encoded, WavError] {
@@ -299,8 +300,8 @@ fn encode_audio(
 /// One/two channels retain canonical 44-byte headers; multichannel uses an
 /// extensible header with unspecified speaker mask and ordinal channel order.
 pub fn encode(
-  rate : Int,
-  channels : Int,
+  rate : Int32,
+  channels : Int32,
   samples : ArrayView[Double],
 ) -> Result[Encoded, WavError] {
   encode_audio(rate, channels, samples, false)
@@ -312,8 +313,8 @@ pub fn encode(
 /// Includes fact; uses
 /// an extensible header for >2 channels. clipped_samples is always zero.
 pub fn encode_float32(
-  rate : Int,
-  channels : Int,
+  rate : Int32,
+  channels : Int32,
   samples : ArrayView[Double],
 ) -> Result[Encoded, WavError] {
   encode_audio(rate, channels, samples, true)

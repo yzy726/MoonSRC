@@ -1,9 +1,9 @@
 ///|
 fn verify_facade(
-  input_rate : Int,
-  output_rate : Int,
-  channels : Int,
-  frames : Int,
+  input_rate : Int32,
+  output_rate : Int32,
+  channels : Int32,
+  frames : Int32,
 ) -> Unit raise {
   let config = @MoonSRC.Config::new(input_rate, output_rate, channels).unwrap()
   let input = Array::makei(frames * channels, i => {

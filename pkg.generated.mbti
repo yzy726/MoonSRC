@@ -8,60 +8,63 @@ import {
 // Values
 pub fn resample(Config, ArrayView[Double]) -> Result[Array[Double], ResampleError]
 
-pub fn resample_into(Config, ArrayView[Double], FixedArray[Double]) -> Result[Int, ResampleError]
+pub fn resample_into(Config, ArrayView[Double], FixedArray[Double]) -> Result[Int32, ResampleError]
 
 // Errors
 
 // Types and methods
+#derive(Eq, @debug.Debug)
 pub struct Config {
   // private fields
-} derive(Eq, @debug.Debug)
-pub fn Config::channels(Self) -> Int
+}
+pub fn Config::channels(Self) -> Int32
 pub fn Config::equal(Self, Self) -> Bool
-pub fn Config::input_rate(Self) -> Int
-pub fn Config::new(Int, Int, Int) -> Result[Self, ResampleError]
+pub fn Config::input_rate(Self) -> Int32
+pub fn Config::new(Int32, Int32, Int32) -> Result[Self, ResampleError]
 pub fn Config::not_equal(Self, Self) -> Bool
 pub fn Config::output_frames(Self, Int64) -> Result[Int64, ResampleError]
-pub fn Config::output_rate(Self) -> Int
+pub fn Config::output_rate(Self) -> Int32
 pub fn Config::quality(Self) -> Quality
 pub fn Config::to_repr(Self) -> @debug.Repr
-pub fn Config::with_quality(Int, Int, Int, Quality) -> Result[Self, ResampleError]
+pub fn Config::with_quality(Int32, Int32, Int32, Quality) -> Result[Self, ResampleError]
 
 pub(all) struct Latency {
-  input_frames : Int
-  output_frames : Int
+  input_frames : Int32
+  output_frames : Int32
   seconds : Double
 }
 
 pub(all) struct Progress {
-  consumed_frames : Int
-  produced_frames : Int
+  consumed_frames : Int32
+  produced_frames : Int32
   needs_input : Bool
   needs_output : Bool
   finished : Bool
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) enum Quality {
   LowLatency
   Balanced
   HighQuality
-} derive(Eq, @debug.Debug)
+}
 pub fn Quality::equal(Self, Self) -> Bool
 pub fn Quality::not_equal(Self, Self) -> Bool
 pub fn Quality::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) enum ResampleError {
-  InvalidRate(Int)
-  UnsupportedRatio(Int, Int)
-  InvalidChannels(Int)
+  InvalidRate(Int32)
+  UnsupportedRatio(Int32, Int32)
+  InvalidChannels(Int32)
   MisalignedInput
   MisalignedOutput
-  NonFinite(Int)
+  NonFinite(Int32)
   InvalidState
   FrameOverflow
   NumericOverflow
   ResourceLimit
-} derive(Eq, @debug.Debug)
+}
 pub fn ResampleError::equal(Self, Self) -> Bool
 pub fn ResampleError::not_equal(Self, Self) -> Bool
 pub fn ResampleError::to_repr(Self) -> @debug.Repr
@@ -80,11 +83,11 @@ pub fn Resampler::stats(Self) -> Stats
 pub(all) struct Stats {
   input_frames : Int64
   output_frames : Int64
-  buffered_frames : Int
-  peak_history_frames : Int
-  history_capacity_samples : Int
-  coefficient_samples : Int
-  internal_samples : Int
+  buffered_frames : Int32
+  peak_history_frames : Int32
+  history_capacity_samples : Int32
+  coefficient_samples : Int32
+  internal_samples : Int32
 }
 
 type StreamState

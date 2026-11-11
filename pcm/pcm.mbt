@@ -1,10 +1,11 @@
 ///|
 /// Classified PCM16 conversion errors.
+#derive(Debug, Eq)
 pub(all) enum PcmError {
   OddByteLength
-  NonFinite(Int)
+  NonFinite(Int32)
   ResourceLimit
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend PcmError with @debug.Debug::{to_repr}
@@ -16,7 +17,7 @@ pub extend PcmError with Eq::{equal, not_equal}
 /// Quantized bytes plus the number of samples saturated to PCM16 endpoints.
 pub(all) struct Encoded {
   bytes : Bytes
-  clipped_samples : Int
+  clipped_samples : Int32
 }
 
 ///|
